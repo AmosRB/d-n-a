@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>אות C עבה וסיבוב תלת מימד</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @layer utilities {
+      @keyframes spin3d {
+        0% { transform: rotateY(0deg); }
+        100% { transform: rotateY(360deg); }
+      }
+      .animate-spin3d {
+        animation: spin3d 12s linear infinite;
+        transform-style: preserve-3d;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#0b0c1a] min-h-screen flex items-center justify-center perspective-[800px]">
+
+  <div class="relative animate-spin3d transform-gpu" style="transform-style: preserve-3d;">
+    <!-- שכבות עומק -->
+    <!-- ניצור 25 שכבות מוזזות קלות אחורה -->
+    <script>
+      for (let i = 0; i < 25; i++) {
+        const span = document.createElement('span');
+        span.textContent = 'C';
+        span.className = 'absolute top-0 left-0 text-[160px] font-black font-mono';
+        span.style.color = `hsl(30, 60%, ${40 + i}%)`;
+        span.style.transform = `translateZ(${-i}px)`;
+        document.currentScript.parentNode.appendChild(span);
+      }
+    </script>
+  </div>
+
+</body>
+</html>

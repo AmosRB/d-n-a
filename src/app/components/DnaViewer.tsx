@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סליל DNA לקוד</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #000; /* שחור כרקע */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .image-container {
+            border-radius: 1rem; /* פינות מעוגלות */
+            overflow: hidden;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            max-height: 90vh;
+        }
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .loading-spinner {
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <div id="image-display" class="flex justify-center items-center w-full h-full">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const imageDisplay = document.getElementById('image-display');
+            imageDisplay.innerHTML = '<div class="loading-spinner"></div>'; // מציג ספינר טעינה
+
+            try {
+                // Prompt updated to emphasize the DNA helix starting far in the distance and approaching the viewer,
+                // while transforming into 3D Java code.
+                const prompt = "A vibrant, colorful DNA helix starting far in the distance, receding into the horizon on a black background. As the helix dramatically approaches the viewer, it becomes larger and its strands gradually transform into intricate, glowing, three-dimensional Java code characters, with the code becoming clearer and more defined in the foreground.";
+                const payload = { instances: { prompt: prompt }, parameters: { "sampleCount": 1 } };
+                const apiKey = ""; // אם ברצונך להשתמש במודלים אחרים מלבד imagen-3.0-generate-002, ספק מפתח API כאן. אחרת, השאר זאת כפי שהיא.
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
+                    const imageUrl = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+                    imageDisplay.innerHTML = `
+                        <div class="image-container">
+                            <img src="${imageUrl}" alt="סליל DNA מתקרב והופך לקוד Java תלת מימדי" class="rounded-2xl">
+                        </div>
+                    `;
+                } else {
+                    imageDisplay.innerHTML = '<p class="text-red-500">שגיאה ביצירת התמונה. אנא נסה שוב.</p>';
+                    console.error('Image generation failed:', result);
+                }
+            } catch (error) {
+                imageDisplay.innerHTML = '<p class="text-red-500">אירעה שגיאה בטעינת התמונה. אנא נסה שוב.</p>';
+                console.error('Fetch error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
