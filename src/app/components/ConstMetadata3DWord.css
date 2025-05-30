@@ -1,12 +1,13 @@
 
 .const3d-wrapper {
   display: flex;
-  gap: 20px;
-  padding: 1rem;
-  background: #0b0c1a;
-  border-radius: 1rem;
-  perspective: 800px;
+  gap: 10px; /* היה 20px - מצמצם */
+  flex-wrap: wrap; /* אם עובר מסך - ירד שורה */
+  max-width: 90vw; /* מגביל לרוחב */
+  overflow: hidden; /* מונע גלילה */
 }
+
+
 
 .const3d-letter {
   position: relative;

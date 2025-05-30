@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8" />
+  <title>JavaScript DNA Vortex</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      overflow-y: scroll;
+    }
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 2200px;
+    }
+  </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<script>
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = window.innerWidth;
+  canvas.height = 2200; // גובה מורחב לראות את כל הסליל
+
+  const codeLines = [
+    "function greet(name) { return 'Hello ' + name; }",
+    "const x = Math.random() * 100;",
+    "for (let i = 0; i < 10; i++) console.log(i);",
+    "document.querySelector('#id').innerHTML = x;",
+    "setInterval(() => console.log('tick'), 1000);",
+    "let total = items.reduce((a, b) => a + b);"
+  ];
+  const chars = codeLines.join(" ").split("");
+
+  const colors = [
+    "#007bff", "#ff7f0e", "#00d0ff", "#ffffff",
+    "#ffff00", "#b266ff", "#00cc44", "#ff0000"
+  ];
+
+  function S(a) { return Math.sin(a); }
+  function C(a) { return Math.cos(a); }
+
+  function draw(t) {
+    const cx = canvas.width / 2;
+    const cy = canvas.height * 0.95;
+
+    // 🎯 מערבולת צבעונית מלמטה
+    for (let i = 0; i < 2000; i++) {
+      const F = 260 * (t + 9) / (i + 1) + S(i * i);
+      const x = cx + i * S(F);
+      const y = cy - 0.25 * (2 * i * C(F) + 10000 / (i + 1));
+
+      const char = chars[i % chars.length];
+      const color = colors[i % colors.length];
+
+      ctx.font = `${10 + (i % 10)}px monospace`;
+      ctx.fillStyle = color;
+      ctx.fillText(char, x, y);
+    }
+
+    // 🧬 סליל DNA מסתובב סביב צירו – מחובר נמוך יותר
+    const helixLength = 80;
+    const helixSpacing = 12;
+    const rotationSpeed = 1.5;
+    const helixStartY = 950; // שורה זו הורדה הרבה יותר נמוך
+
+    for (let j = 0; j < helixLength; j++) {
+      const baseAngle = j * 0.3;
+      const angle = t * rotationSpeed + baseAngle;
+      const y = helixStartY + j * helixSpacing;
+      const radius = 50 + 10 * Math.sin(t + j * 0.1);
+
+      const xOffset = radius * Math.cos(angle);
+      const x1 = cx + xOffset;
+      const x2 = cx - xOffset;
+
+      const char1 = chars[(j * 2) % chars.length];
+      const char2 = chars[(j * 2 + 1) % chars.length];
+
+      const color1 = colors[(j * 2) % colors.length];
+      const color2 = colors[(j * 2 + 1) % colors.length];
+
+      ctx.fillStyle = color1;
+      ctx.font = `14px monospace`;
+      ctx.fillText(char1, x1, y);
+
+      ctx.fillStyle = color2;
+      ctx.fillText(char2, x2, y);
+
+      ctx.strokeStyle = "rgba(255,255,255,0.1)";
+      ctx.beginPath();
+      ctx.moveTo(x1, y);
+      ctx.lineTo(x2, y);
+      ctx.stroke();
+    }
+  }
+
+  let frame = 0;
+  function animate() {
+    frame++;
+    const t = frame / 60;
+    ctx.fillStyle = "rgba(0,0,0,0.45)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    draw(t);
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
+</body>
+</html>
