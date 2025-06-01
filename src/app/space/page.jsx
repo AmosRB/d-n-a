@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function HomePage() {
   const sections = [
-    { title: "אתרי רשת חכמים", text: "תכנון, עיצוב והקמת אתרי רשת מתוחכמים מותאמים לכל סוגי המסכים (רספונסיביים), עם יכולת הטמעת פונקציותת מתקדמות, ניהול מאגרי מידע וממשקי ניהול פנימיים." },
+    { title: "אתרי רשת חכמים", text: "תכנון, עיצוב והקמת אתרי רשת מתוחכמים מותאמים לכל סוגי המסכים (רספונסיביים), עם יכולת הטמעת פונקציות מתקדמות, ניהול מאגרי מידע וממשקי ניהול פנימיים." },
     { title: "אפליקציות לטלפון", text: "ביחד אתכם נתכנן ונבנה אפליקציה לטלפון התפורה למידותיכם - אוטומאציה ונגישות מכל מכשיר לניהול העסק או לשיפור בחיי היום יום" },
     { title: "אפליקציות לניהול וייעול", text: "אפליקציות לייעול, שמירה וארגון מידע בסביבה מקומית או בענן. אפליקציות לניהול מלאי, משימות, לוחות זמנים, מעקב ביצוע ושליטה תפורים לצרכיך לפי מידה" },
     { title: "פיצ'רים חכמים", text: "הוספת ממשקי ניהול, אפליקציות חכמות, תוספים לדפדפנים בהתאמה אישית, כרטיסי ביקור דיגיטליים ועוד" },
@@ -27,22 +27,49 @@ export default function HomePage() {
   const [activeIndex, setActiveIndex] = useState(null);
   const [hoveredIdx, setHoveredIdx] = useState(null);
   const smoothScrollY = useRef(0);
+  const lastScrollY = useRef(0);
+  const freezeRef = useRef(false);
+  const freezeTimeout = useRef(null);
   const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
 
   useEffect(() => setReady(true), []);
 
-  useEffect(() => {
-    if (!ready) return;
-    const update = () => {
+useEffect(() => {
+  if (!ready) return;
+
+  const update = () => {
+    const currentY = window.scrollY;
+    const directionDown = currentY > lastScrollY.current;
+    const sectionHeight = window.innerHeight * 2;
+    const progress = (smoothScrollY.current % sectionHeight) / sectionHeight;
+    const freezeZone = progress > 1.25 && progress < 1.33;
+
+    if (freezeZone && directionDown && !freezeRef.current) {
+      freezeRef.current = true;
+      freezeTimeout.current = setTimeout(() => {
+        freezeRef.current = false;
+      }, 1200);
+    }
+
+    if (!freezeRef.current) {
       smoothScrollY.current += (window.scrollY - smoothScrollY.current) * 0.1;
       setScrollY(smoothScrollY.current);
-      const sectionHeight = window.innerHeight * 2;
-      const newIndex = Math.floor((smoothScrollY.current + sectionHeight / 2) / sectionHeight) % sections.length;
-      setActiveIndex(newIndex);
-      requestAnimationFrame(update);
-    };
-    update();
-  }, [ready]);
+
+      const newIndex = Math.floor(
+        (smoothScrollY.current + sectionHeight / 2) / sectionHeight
+      );
+
+      setActiveIndex(newIndex % sections.length); // ✅ תיקון התאמה
+      lastScrollY.current = currentY;
+    }
+
+    requestAnimationFrame(update);
+  };
+
+  update();
+  return () => clearTimeout(freezeTimeout.current);
+}, [ready]);
+
 
   if (!ready) return null;
 
@@ -50,10 +77,13 @@ export default function HomePage() {
   const allSections = [...sections, ...sections, ...sections];
   const fullHeight = allSections.length * sectionHeight;
 
-  const scrollToSection = (idx) => {
-    const sectionOffset = idx * sectionHeight + sectionHeight * 1.5;
-    window.scrollTo({ top: sectionOffset, behavior: "smooth" });
-  };
+ const scrollToSection = (idx) => {
+  const sectionHeight = window.innerHeight * 2;
+  const targetProgress = 1.2;
+  const offsetY = idx * sectionHeight + sectionHeight * (targetProgress - 0.5);
+  window.scrollTo({ top: offsetY, behavior: "smooth" });
+};
+
 
   const offset = isMobile ? 0 : (activeIndex !== null ? -(activeIndex * 7.5) + 21 : 0);
 
@@ -66,8 +96,8 @@ export default function HomePage() {
       </div>
 
       <div
-        className="fixed right-2 sm:right-20 z-[1001] flex flex-col items-center gap-4 sm:gap-[1.75rem] mt-20 sm:mt-40 transition-transform duration-500"
-        style={{ transform: `translateY(${offset}em)` }}
+        className="fixed z-[1001] flex flex-col items-center gap-4 sm:gap-[1.75rem] transition-transform duration-500"
+        style={{ top: isMobile ? '18vh' : '25vh', right: isMobile ? '8px' : '5vw', transform: `translateY(${offset}em)` }}
       >
         {sections.map((section, idx) => {
           const style = buttonStyles[idx];
@@ -116,52 +146,140 @@ export default function HomePage() {
       </div>
 
 
+
       {/* סקשנים */}
-      {allSections.map((item, index) => {
-        const sectionOffset = index * sectionHeight;
-        const relativeY = scrollY - sectionOffset + sectionHeight / 2;
-        const progress = relativeY / sectionHeight;
+{allSections.map((item, index) => {
+  const sectionOffset = index * sectionHeight;
+  const relativeY = scrollY - sectionOffset + sectionHeight / 2;
+  const progress = relativeY / sectionHeight;
 
-        let scale = 0.05;
-        let opacity = 0;
-        let borderColor = "white";
+  let scale = 0.05;
+  let opacity = 0;
+  let borderColor = "rgba(0, 169, 253, 0)";
+  let backgroundColor = "rgba(15, 23, 42, 0)";
+  let textOpacity = 0;
+  let glow = "";
+  let blackBorderOpacity = 0;
 
-        if (scrollY > 50) {
-          if (progress < 0.85) {
-            scale = 0.05 + progress * 1.1176;
-            opacity = Math.max(progress * 1.2, 0.05);
-          } else if (progress < 0.95) {
-            scale = 1;
-            opacity = 1;
-            borderColor = "#f97316";
-          } else {
-            const exitProgress = (progress - 0.95) / 0.3;
-            scale = 1 + exitProgress * 2;
-            opacity = 1 - exitProgress;
-          }
-        }
+  if (scrollY > 50) {
+    if (progress < 0.75) {
+      scale = 0.05 + progress * 1.1176;
+      opacity = Math.max(progress * 1.2, 0.05);
+    } else if (progress < 1.35) {
+      // שלב 2
+      scale = progress >= 1.28 && progress < 1.32 ? 1.02 : 1; // עצירה קלה לקראת הסוף
+      opacity = 1;
 
-        return (
-          <div
-            key={index}
-            style={{
-              position: "fixed",
-              top: "50%",
-              left: "50%",
-              transform: `translate(-50%, -50%) scale(${scale})`,
-              opacity,
-              zIndex: 999 - index,
-              borderColor,
-            }}
-            className="transition-all duration-300 ease-out border-4 w-[44.8vw] h-[36vh] rounded-2xl flex items-center justify-center text-center bg-slate-900 text-white"
-          >
-            <div className="p-6">
-              <h2 className="text-3xl font-bold mb-4 break-words whitespace-normal text-center">{item.title}</h2>
-              <p className="text-lg break-words whitespace-normal leading-relaxed text-center">{item.text}</p>
-            </div>
-          </div>
-        );
-      })}
+      // הילה חזקה לרגע קצר בתחילת שלב 2
+      if (progress > 0.84 && progress < 0.90) {
+        glow = `0 0 120px rgba(255, 200, 50, 1), 0 0 60px rgba(255, 200, 50, 0.85)`;
+      } else if (progress >= 0.75 && progress < 1.35) {
+        glow = `0 0 60px rgba(255, 240, 150, 0.5)`;
+      }
+
+      // מסגרת כתומה הדרגתית
+      if (progress < 0.95) {
+        const bProgress = (progress - 0.75) / 0.25;
+        borderColor = `rgba(249, 115, 22, ${bProgress.toFixed(2)})`;
+      } else {
+        borderColor = "#f97316";
+      }
+
+      // רקע עולה
+      if (progress < 1.0) {
+        backgroundColor = "rgba(15, 23, 42, 0)";
+      } else if (progress < 1.15) {
+        const bgProgress = (progress - 1.0) / 0.15;
+        backgroundColor = `rgba(15, 23, 42, ${bgProgress.toFixed(2)})`;
+      } else {
+        backgroundColor = "rgba(15, 23, 42, 1)";
+      }
+
+      // טקסט
+      if (progress < 1.15) {
+        textOpacity = 0;
+      } else if (progress < 1.3) {
+        const tProgress = (progress - 1.15) / 0.15;
+        textOpacity = tProgress;
+      } else {
+        textOpacity = 1;
+      }
+
+      // מסגרת שחורה - לפני ואחרי כתום
+      if (progress >= 0.65 && progress <= 1.4) {
+        const peak = 1.0;
+        blackBorderOpacity = 1 - Math.abs(progress - peak) * 2.3;
+        blackBorderOpacity = Math.max(0, Math.min(1, blackBorderOpacity));
+      }
+    } else {
+      const exitProgress = (progress - 1.35) / 0.3;
+      scale = 1 + exitProgress * 2;
+      opacity = 1 - exitProgress;
+      borderColor = "rgba(0, 169, 253, 0)";
+      backgroundColor = "rgba(15, 23, 42, 0)";
+      textOpacity = 0;
+    }
+  }
+
+  return (
+    <div
+      key={index}
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: `translate(-50%, -50%) scale(${scale})`,
+        opacity,
+        zIndex: 999 - index,
+      }}
+      className="transition-all duration-300 ease-out w-[44.8vw] h-[36vh] rounded-2xl flex items-center justify-center text-center"
+    >
+      {/* מסגרת שחורה */}
+      {blackBorderOpacity > 0 && (
+        <div
+          style={{
+            position: "absolute",
+            width: "98.5%",
+            height: "98.5%",
+            borderRadius: "1rem",
+            border: `6px solid rgba(0,0,0,${blackBorderOpacity})`,
+            zIndex: 1,
+          }}
+        />
+      )}
+
+      {/* תוכן */}
+      <div
+        style={{
+          borderColor,
+          backgroundColor,
+          boxShadow: glow,
+          position: "relative",
+          zIndex: 0,
+        }}
+        className="w-full h-full border-4 rounded-2xl flex items-center justify-center text-white"
+      >
+        <div className="p-6">
+<h2 className="text-xl sm:text-3xl font-bold mb-4 break-words whitespace-normal text-center">
+  {item.title}
+</h2>
+
+<p
+  className="text-xs sm:text-base break-words whitespace-pre-line leading-relaxed text-center px-2 sm:px-4"
+  style={{ opacity: textOpacity }}
+>
+  {item.text}
+</p>
+        </div>
+      </div>
+    </div>
+  );
+})}
+
+
+
+
+
 
     {/* פוטר קבוע */}
       <footer className="fixed bottom-0 left-0 w-full h-36 z-[2000]">
