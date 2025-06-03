@@ -46,7 +46,6 @@ useEffect(() => {
   const [showButtons, setShowButtons] = useState(true);
   const [heroImageOpacity, setHeroImageOpacity] = useState(1);
 
-
   useEffect(() => setReady(true), []);
 sectionRefs.current = sections.map((_, i) => sectionRefs.current[i] ?? React.createRef());
 
@@ -111,15 +110,11 @@ useEffect(() => {
         <Image src="/DNA3.png" alt="DNA Background" fill style={{ objectFit: "cover" }} priority />
       </div>
 
-
-
       {/* NAVBAR שקוף */}
 <div className="fixed top-0 left-0 w-full z-[3000] bg-transparent backdrop-blur-sm flex items-center justify-between px-6 py-4">
 <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] w-fit mx-auto">
   D&amp;A code design
 </h1>
-
-
  
 <div className="fixed top-16 sm:top-24 left-1/2 transform -translate-x-1/2 z-[1001] text-center">
 
@@ -165,8 +160,6 @@ onClick={() => {
   }
 }}
 
-
-
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
               className="w-16 h-16 sm:w-24 sm:h-24 rounded-[20%] flex items-center justify-center transition-all duration-300 cursor-pointer border-2"
@@ -192,7 +185,6 @@ onClick={() => {
     ? "AI"
     : section.title.replace(" ", "\n")}
 </p>
-
 
               </div>
             </div>
@@ -302,8 +294,6 @@ return (
 >
 
 
-    {/* ללא מסגרת שחורה */}
-
     {/* תוכן עם מסגרת כתומה */}
     <div
       style={{
@@ -352,7 +342,6 @@ return (
 )}
 
 
-
     {/* פוטר קבוע */}
       <footer className="fixed bottom-0 left-0 w-full h-36 z-[2000]">
         <div className="h-1/2 w-full bg-transparent" />
@@ -363,7 +352,6 @@ return (
   054-3385089
 
 </p>
-
 
           <a
   href="https://wa.me/972543385089?text=שלום עמוס, ראיתי את האתר ורציתי ליצור קשר"
