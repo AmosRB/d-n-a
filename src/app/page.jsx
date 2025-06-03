@@ -325,14 +325,20 @@ return (
 })}
 
 {isMobile && (
-  <div className="w-full h-full overflow-y-scroll snap-y snap-mandatory">
-    {sections.map((item, index) => (
   <div
-    key={index}
-    ref={sectionRefs.current[index]}
-    className="h-[100vh] flex items-center justify-center p-4 snap-start transition-opacity duration-700"
+    className="w-full min-h-screen overflow-y-scroll snap-y snap-mandatory"
+    onScroll={(e) => {
+      const scrollTop = e.target.scrollTop;
+      const opacity = Math.max(0.2, 1 - scrollTop / 300);
+      setHeroImageOpacity(opacity);
+    }}
   >
-
+    {sections.map((item, index) => (
+      <div
+        key={index}
+        ref={sectionRefs.current[index]}
+        className="h-[100vh] flex items-center justify-center p-4 snap-start transition-opacity duration-700"
+      >
         <div className="w-[85vw] max-w-[85vw] max-h-[80vh] bg-[#0f172a] border-4 border-orange-500 rounded-2xl p-6 text-white shadow-xl flex flex-col items-center justify-center text-center">
           <h2 className="text-2xl font-bold mb-4">{item.title}</h2>
           <p className="text-sm leading-relaxed whitespace-pre-line">{item.text}</p>
@@ -341,6 +347,7 @@ return (
     ))}
   </div>
 )}
+
 
 
     {/* פוטר קבוע */}
