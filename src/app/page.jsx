@@ -2,8 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import React from "react";
+
 
 export default function HomePage() {
+  const sectionRefs = useRef([]);
   const sections = [
     { title: "אתרי רשת חכמים", text: "תכנון, עיצוב והקמת אתרי רשת מתוחכמים מותאמים לכל סוגי המסכים (רספונסיביים), עם יכולת הטמעת פונקציות מתקדמות, ניהול מאגרי מידע וממשקי ניהול פנימיים." },
     { title: "אפליקציות לטלפון", text: "אפליקציה לטלפון התפורה לעסק או לחיי היומיום שלכם - לדוגמה הוספת אפליקציה שתתחבר עם ממשקי הניהול שלכם לאוטומאציה ונגישות מכל מכשיר" },
@@ -31,11 +34,21 @@ export default function HomePage() {
   const lastScrollY = useRef(0);
   const freezeRef = useRef(false);
   const freezeTimeout = useRef(null);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const checkMobile = () => setIsMobile(window.innerWidth < 640);
+  checkMobile();
+  window.addEventListener("resize", checkMobile);
+  return () => window.removeEventListener("resize", checkMobile);
+}, []);
+
   const [showButtons, setShowButtons] = useState(true);
   const [heroImageOpacity, setHeroImageOpacity] = useState(1);
 
+
   useEffect(() => setReady(true), []);
+sectionRefs.current = sections.map((_, i) => sectionRefs.current[i] ?? React.createRef());
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,8 +60,8 @@ export default function HomePage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (!ready || isMobile) return;
+useEffect(() => {
+  if (!ready || typeof window === "undefined") return;
     const update = () => {
       const currentY = window.scrollY;
       const directionDown = currentY > lastScrollY.current;
@@ -144,7 +157,16 @@ export default function HomePage() {
           return (
             <div
               key={idx}
-              onClick={() => scrollToSection(idx)}
+onClick={() => {
+  if (isMobile && sectionRefs.current[idx]?.current) {
+    sectionRefs.current[idx].current.scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    scrollToSection(idx);
+  }
+}}
+
+
+
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
               className="w-16 h-16 sm:w-24 sm:h-24 rounded-[20%] flex items-center justify-center transition-all duration-300 cursor-pointer border-2"
@@ -181,7 +203,8 @@ export default function HomePage() {
 
 
       {/* סקשנים */}
-{allSections.map((item, index) => {
+{!isMobile &&
+  allSections.map((item, index) => {
   const sectionOffset = index * sectionHeight;
   const relativeY = scrollY - sectionOffset + sectionHeight / 2;
   const progress = relativeY / sectionHeight;
@@ -309,23 +332,25 @@ return (
 );
 
 })}
-{isMobile ? (
-  <div className="relative w-full h-[70vh] flex items-center justify-center">
+
+{isMobile && (
+  <div className="w-full h-full overflow-y-scroll snap-y snap-mandatory">
     {sections.map((item, index) => (
-      <div
-        key={index}
-        className={`absolute transition-opacity duration-700 ease-in-out px-6 text-center ${
-          activeIndex === index ? "opacity-100 z-20" : "opacity-0 z-10 pointer-events-none"
-        }`}
-      >
-        <div className="bg-gray-900 bg-opacity-80 rounded-2xl p-6 max-w-md mx-auto">
-          <h2 className="text-xl font-bold mb-4">{item.title}</h2>
+  <div
+    key={index}
+    ref={sectionRefs.current[index]}
+    className="h-[100vh] flex items-center justify-center p-4 snap-start transition-opacity duration-700"
+  >
+
+        <div className="w-[85vw] max-w-[85vw] max-h-[80vh] bg-[#0f172a] border-4 border-orange-500 rounded-2xl p-6 text-white shadow-xl flex flex-col items-center justify-center text-center">
+          <h2 className="text-2xl font-bold mb-4">{item.title}</h2>
           <p className="text-sm leading-relaxed whitespace-pre-line">{item.text}</p>
         </div>
       </div>
     ))}
   </div>
-) : null}
+)}
+
 
 
     {/* פוטר קבוע */}
