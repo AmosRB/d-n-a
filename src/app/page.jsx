@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -6,9 +6,9 @@ import Image from "next/image";
 export default function HomePage() {
   const sections = [
     { title: "אתרי רשת חכמים", text: "תכנון, עיצוב והקמת אתרי רשת מתוחכמים מותאמים לכל סוגי המסכים (רספונסיביים), עם יכולת הטמעת פונקציות מתקדמות, ניהול מאגרי מידע וממשקי ניהול פנימיים." },
-    { title: "אפליקציות לטלפון", text: "ביחד אתכם נתכנן ונבנה אפליקציה לטלפון התפורה למידותיכם - אוטומאציה ונגישות מכל מכשיר לניהול העסק או לשיפור בחיי היום יום" },
-    { title: "אפליקציות לניהול וייעול", text: "אפליקציות לייעול, שמירה וארגון מידע בסביבה מקומית או בענן. אפליקציות לניהול מלאי, משימות, לוחות זמנים, מעקב ביצוע ושליטה תפורים לצרכיך לפי מידה" },
-    { title: "פיצ'רים חכמים", text: "הוספת ממשקי ניהול, אפליקציות חכמות, תוספים לדפדפנים בהתאמה אישית, כרטיסי ביקור דיגיטליים ועוד" },
+    { title: "אפליקציות לטלפון", text: "אפליקציה לטלפון התפורה לעסק או לחיי היומיום שלכם - לדוגמה הוספת אפליקציה שתתחבר עם ממשקי הניהול שלכם לאוטומאציה ונגישות מכל מכשיר" },
+    { title: "אפליקציות לניהול ושליטה", text: "אפליקציות לייעול, שמירה וארגון מידע בסביבה מקומית או בענן. אפליקציות לניהול מלאי, משימות, לוחות זמנים, מעקב ביצוע ושליטה תפורים לצרכיך לפי מידה" },
+    { title: "פיצ'רים חכמים", text: "הוספת ממשקי ניהול לאפליקציות קיימות, שילוב אפליקציות חכמות, תוספים לדפדפנים בהתאמה אישית, כרטיסי ביקור דיגיטליים ועוד" },
     { title: "AI מנועי", text: "סוכני בינה מלאכותית לומדים בהתאמה אישית שיעבדו בשבילך מסביב לשעון" },
     { title: "פיתוחים מבוססי בלוקצ'יין", text: "אפליקציות תקשורת בלתי חדירות מאובטחות בלוקצ'יין. אפליקציות לניהול ושמירת מידע עם אבטחת בלוקצ'יין ועוד פיתוחים שמנצלים את היתרונות הרבים של הבלוקצ'יין" },
   ];
@@ -31,8 +31,26 @@ export default function HomePage() {
   const freezeRef = useRef(false);
   const freezeTimeout = useRef(null);
   const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+  const [showButtons, setShowButtons] = useState(true);
+  const [heroImageOpacity, setHeroImageOpacity] = useState(1);
+
+  
+
 
   useEffect(() => setReady(true), []);
+
+  useEffect(() => {
+  const handleScroll = () => {
+    const scrollTop = window.scrollY;
+    const opacity = Math.max(0.2, 1 - scrollTop / 300); // דעיכה עד 20%
+    setHeroImageOpacity(opacity);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
+
 
 useEffect(() => {
   if (!ready) return;
@@ -51,17 +69,16 @@ useEffect(() => {
       }, 1200);
     }
 
-    if (!freezeRef.current) {
-      smoothScrollY.current += (window.scrollY - smoothScrollY.current) * 0.1;
-      setScrollY(smoothScrollY.current);
+if (!freezeRef.current) {
+  smoothScrollY.current += (window.scrollY - smoothScrollY.current) * 0.1;
+  setScrollY(smoothScrollY.current);
 
-      const newIndex = Math.floor(
-        (smoothScrollY.current + sectionHeight / 2) / sectionHeight
-      );
+  const newIndex = Math.floor(smoothScrollY.current / sectionHeight);
+  setActiveIndex(newIndex % sections.length);
 
-      setActiveIndex(newIndex % sections.length); // ✅ תיקון התאמה
-      lastScrollY.current = currentY;
-    }
+  lastScrollY.current = currentY;
+}
+
 
     requestAnimationFrame(update);
   };
@@ -79,21 +96,56 @@ useEffect(() => {
 
  const scrollToSection = (idx) => {
   const sectionHeight = window.innerHeight * 2;
-  const targetProgress = 1.2;
+  const targetProgress = 1.3;
   const offsetY = idx * sectionHeight + sectionHeight * (targetProgress - 0.5);
   window.scrollTo({ top: offsetY, behavior: "smooth" });
 };
 
 
-  const offset = isMobile ? 0 : (activeIndex !== null ? -(activeIndex * 7.5) + 21 : 0);
+  const offset = showButtons ? 0 : (isMobile ? 0 : (activeIndex !== null ? -(activeIndex * 7.5) + 21 : 0));
+
 
   return (
     <main className="bg-black text-white overflow-x-hidden relative" style={{ height: `${fullHeight}px` }}>
-      <div className="fixed top-20 right-[40vw] z-[1001] text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] typewriter w-fit mx-auto">
-          D&amp;A code design
-        </h1>
-      </div>
+      
+  <div
+    className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none"
+    style={{ opacity: heroImageOpacity }}
+  >
+    <Image
+      src="/DNA3.png"
+      alt="DNA Background"
+      fill
+      style={{ objectFit: "cover" }}
+      priority
+    />
+  </div>
+
+
+
+      {/* NAVBAR שקוף */}
+<div className="fixed top-0 left-0 w-full z-[3000] bg-transparent backdrop-blur-sm flex items-center justify-between px-6 py-4">
+<h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] w-fit mx-auto">
+  D&amp;A code design
+</h1>
+
+
+ 
+<div className="fixed top-16 sm:top-24 left-1/2 transform -translate-x-1/2 z-[1001] text-center">
+
+ <h1 className="text-base sm:text-lg md:text-xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] typewriter w-fit mx-auto">
+  Coding a new world of possibilities
+</h1>
+
+</div>
+<button
+  onClick={() => setShowButtons(prev => !prev)}
+  className="text-slate-500 text-xl sm:text-3xl md:text-4xl focus:outline-none"
+  style={{ fontWeight: 'bold' }}
+>
+  ☰
+</button>
+ </div>
 
       <div
         className="fixed z-[1001] flex flex-col items-center gap-4 sm:gap-[1.75rem] transition-transform duration-500"
@@ -136,9 +188,13 @@ useEffect(() => {
                     : "inset 0 0 2px rgba(255,255,255,0.05)"
                 }}
               >
-                <p className="text-[#fffde6] text-[0.55rem] sm:text-[0.75rem] font-bold leading-tight drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] whitespace-pre-line">
-                  {section.title.replace(" ", "\n")}
-                </p>
+  <p className="text-[#fffde6] text-[0.55rem] sm:text-[0.75rem] font-bold leading-tight drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] text-center whitespace-normal">
+  {section.title === "מנועי AI"
+    ? "AI"
+    : section.title.replace(" ", "\n")}
+</p>
+
+
               </div>
             </div>
           );
@@ -167,8 +223,9 @@ useEffect(() => {
       opacity = Math.max(progress * 1.2, 0.05);
     } else if (progress < 1.35) {
       // שלב 2
-      scale = progress >= 1.28 && progress < 1.32 ? 1.02 : 1; // עצירה קלה לקראת הסוף
+      scale = progress >= 1.25 && progress < 1.4 ? 1.1 : 1; // עצירה קלה לקראת הסוף
       opacity = 1;
+      
 
       // הילה חזקה לרגע קצר בתחילת שלב 2
       if (progress > 0.84 && progress < 0.90) {
@@ -206,78 +263,75 @@ useEffect(() => {
       }
 
       // מסגרת שחורה - לפני ואחרי כתום
-      if (progress >= 0.65 && progress <= 1.4) {
+      if (progress >= 0.65 && progress <= 1.5) {
         const peak = 1.0;
         blackBorderOpacity = 1 - Math.abs(progress - peak) * 2.3;
         blackBorderOpacity = Math.max(0, Math.min(1, blackBorderOpacity));
       }
-    } else {
-      const exitProgress = (progress - 1.35) / 0.3;
-      scale = 1 + exitProgress * 2;
-      opacity = 1 - exitProgress;
-      borderColor = "rgba(0, 169, 253, 0)";
-      backgroundColor = "rgba(15, 23, 42, 0)";
-      textOpacity = 0;
-    }
+} else {
+  const exitProgress = (progress - 1.4) / 0.3;
+  scale = 1 + exitProgress * 2;
+  opacity = 1 - exitProgress;
+
+  // דעיכת מסגרת
+  const borderFade = Math.max(0, 1 - exitProgress * 2);
+  borderColor = `rgba(249, 115, 22, ${borderFade.toFixed(2)})`;
+
+  // דעיכת רקע
+  const bgFade = Math.max(0, 1 - exitProgress * 1.5);
+  backgroundColor = `rgba(15, 23, 42, ${bgFade.toFixed(2)})`;
+
+  // דעיכת טקסט
+  textOpacity = Math.max(0, 1 - exitProgress * 2);
+}
+
   }
 
-  return (
-    <div
-      key={index}
-      style={{
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: `translate(-50%, -50%) scale(${scale})`,
-        opacity,
-        zIndex: 999 - index,
-      }}
-      className="transition-all duration-300 ease-out w-[44.8vw] h-[36vh] rounded-2xl flex items-center justify-center text-center"
-    >
-      {/* מסגרת שחורה */}
-      {blackBorderOpacity > 0 && (
-        <div
-          style={{
-            position: "absolute",
-            width: "98.5%",
-            height: "98.5%",
-            borderRadius: "1rem",
-            border: `6px solid rgba(0,0,0,${blackBorderOpacity})`,
-            zIndex: 1,
-          }}
-        />
-      )}
+return (
+<div
+  key={index}
+  style={{
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: `translate(calc(-60% - ${isMobile ? 10 : 0}px), -50%) scale(${scale})`,
+    opacity,
+    zIndex: 999 - index,
+  }}
+  className="transition-all duration-300 ease-out w-[62vw] max-w-[90vw] sm:w-[44.8vw] h-auto max-h-[80vh] sm:h-[36vh] rounded-2xl flex items-center justify-center text-center p-4 overflow-visible relative"
+>
 
-      {/* תוכן */}
-      <div
-        style={{
-          borderColor,
-          backgroundColor,
-          boxShadow: glow,
-          position: "relative",
-          zIndex: 0,
-        }}
-        className="w-full h-full border-4 rounded-2xl flex items-center justify-center text-white"
-      >
-        <div className="p-6">
-<h2 className="text-xl sm:text-3xl font-bold mb-4 break-words whitespace-normal text-center">
+
+    {/* ללא מסגרת שחורה */}
+
+    {/* תוכן עם מסגרת כתומה */}
+    <div
+      style={{
+        borderColor,
+        backgroundColor,
+        boxShadow: glow,
+        position: "relative",
+        zIndex: 2,
+      }}
+      className="w-full h-full border-4 rounded-2xl flex items-center justify-center text-white"
+    >
+      <div className="p-6">
+    <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-4 break-words whitespace-normal text-center">
   {item.title}
 </h2>
-
 <p
-  className="text-xs sm:text-base break-words whitespace-pre-line leading-relaxed text-center px-2 sm:px-4"
+  className="text-xs sm:text-base md:text-lg break-words whitespace-pre-line leading-relaxed text-center px-2 sm:px-4"
   style={{ opacity: textOpacity }}
 >
   {item.text}
 </p>
-        </div>
+
       </div>
     </div>
-  );
+  </div>
+);
+
 })}
-
-
-
 
 
 
@@ -285,7 +339,13 @@ useEffect(() => {
       <footer className="fixed bottom-0 left-0 w-full h-36 z-[2000]">
         <div className="h-1/2 w-full bg-transparent" />
         <div className="relative h-1/2 w-full bg-gradient-to-b from-gray-800 to-black text-white text-center text-sm flex justify-center items-center">
-          <p className="w-full">ליצירת קשר – 054-3385089 – amosbahar@gmail.com</p>
+          <p className="w-full text-lg flex justify-center items-center gap-2">
+   amosbahar@gmail.com
+  <span className="w-2 h-2 rounded-full bg-gradient-to-b from-yellow-300 to-orange-500 inline-block" />
+  054-3385089
+
+</p>
+
 
           <a
   href="https://wa.me/972543385089?text=שלום עמוס, ראיתי את האתר ורציתי ליצור קשר"
@@ -293,7 +353,7 @@ useEffect(() => {
   rel="noopener noreferrer"
   className="absolute flex items-center gap-2"
   style={{
-    right: isMobile ? '10px' : '25%',
+    right: isMobile ? '90px' : '25%',
     top: 10,
     transform: 'translateY(-100%)',
     background: 'linear-gradient(to bottom,rgb(145, 76, 206),rgb(37, 8, 37))',
@@ -318,7 +378,6 @@ useEffect(() => {
     }
   }}
 >
-  צור קשר
   <Image src="/whatsapp.png" alt="WhatsApp Icon" width={30} height={30} style={{ opacity: 0.85, transform: 'translateY(-4px)' }} />
 </a>
 
@@ -327,7 +386,7 @@ useEffect(() => {
             href="mailto:amosbahar@gmail.com"
             className="absolute flex items-center gap-2"
             style={{
-              left: isMobile ? '10px' : '10%',
+              left: isMobile ? '10px' : '25%',
               top: 10,
               transform: 'translateY(-100%)',
               background: 'linear-gradient(to bottom, rgb(17, 81, 177), rgb(15, 22, 54))',
@@ -352,7 +411,6 @@ useEffect(() => {
     }
      }}
           >
-            שלח מייל
             <Image src="/Gmail_Icon.png" alt="Mail Icon" width={30} height={30} style={{ opacity: 0.9, transform: 'translateY(-4px)', zIndex: 50, pointerEvents: 'none' }} />
           </a>
         </div>
