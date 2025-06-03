@@ -1,18 +1,9 @@
 "use client";
 
-
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 export default function HomePage() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsMobile(window.innerWidth < 640);
-    }
-  }, []);
-
   const sections = [
     { title: "אתרי רשת חכמים", text: "תכנון, עיצוב והקמת אתרי רשת מתוחכמים מותאמים לכל סוגי המסכים (רספונסיביים), עם יכולת הטמעת פונקציות מתקדמות, ניהול מאגרי מידע וממשקי ניהול פנימיים." },
     { title: "אפליקציות לטלפון", text: "אפליקציה לטלפון התפורה לעסק או לחיי היומיום שלכם - לדוגמה הוספת אפליקציה שתתחבר עם ממשקי הניהול שלכם לאוטומאציה ונגישות מכל מכשיר" },
@@ -22,34 +13,6 @@ export default function HomePage() {
     { title: "פיתוחים מבוססי בלוקצ'יין", text: "אפליקציות תקשורת בלתי חדירות מאובטחות בלוקצ'יין. אפליקציות לניהול ושמירת מידע עם אבטחת בלוקצ'יין ועוד פיתוחים שמנצלים את היתרונות הרבים של הבלוקצ'יין" },
   ];
 
-  if (isMobile) {
-    return (
-      <main className="relative bg-black text-white overflow-x-hidden">
-        <div className="fixed top-0 left-0 w-full h-screen -z-10">
-          <Image src="/DNA3.png" alt="DNA Background" fill style={{ objectFit: "cover", opacity: 0.3 }} priority />
-        </div>
-
-        <header className="text-center py-6 backdrop-blur-sm">
-          <h1 className="text-3xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff]">D&A code design</h1>
-          <p className="mt-2 text-base text-white/80">Coding a new world of possibilities</p>
-        </header>
-
-        {sections.map((section, i) => (
-          <section key={i} className="min-h-screen flex flex-col items-center justify-center px-4 text-center">
-            <div className="bg-slate-800/70 p-6 rounded-xl max-w-xl shadow-lg border border-orange-500">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4">{section.title}</h2>
-              <p className="text-base sm:text-lg leading-relaxed whitespace-pre-line">{section.text}</p>
-            </div>
-          </section>
-        ))}
-
-        <footer className="w-full text-center py-6 bg-gradient-to-b from-gray-800 to-black text-white">
-          <p className="text-lg">amosbahar@gmail.com • 054-3385089</p>
-        </footer>
-      </main>
-    );
-  }
-  
   const buttonStyles = [
     { from: "#001060", to: "#0208f3", innerFrom: "#302fff", innerTo: "#02045b" },
     { from: "#460151", to: "#cc00eb", innerFrom: "#79028b", innerTo: "#4d0159" },
@@ -63,66 +26,55 @@ export default function HomePage() {
   const [scrollY, setScrollY] = useState(0);
   const [activeIndex, setActiveIndex] = useState(null);
   const [hoveredIdx, setHoveredIdx] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const smoothScrollY = useRef(0);
   const lastScrollY = useRef(0);
   const freezeRef = useRef(false);
   const freezeTimeout = useRef(null);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
   const [showButtons, setShowButtons] = useState(true);
   const [heroImageOpacity, setHeroImageOpacity] = useState(1);
-
-  
-
 
   useEffect(() => setReady(true), []);
 
   useEffect(() => {
-  const handleScroll = () => {
-    const scrollTop = window.scrollY;
-    const opacity = Math.max(0.2, 1 - scrollTop / 300); // דעיכה עד 20%
-    setHeroImageOpacity(opacity);
-  };
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const opacity = Math.max(0.2, 1 - scrollTop / 300);
+      setHeroImageOpacity(opacity);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+  useEffect(() => {
+    if (!ready || isMobile) return;
+    const update = () => {
+      const currentY = window.scrollY;
+      const directionDown = currentY > lastScrollY.current;
+      const sectionHeight = window.innerHeight * 2;
+      const progress = (smoothScrollY.current % sectionHeight) / sectionHeight;
+      const freezeZone = progress > 1.25 && progress < 1.33;
 
+      if (freezeZone && directionDown && !freezeRef.current) {
+        freezeRef.current = true;
+        freezeTimeout.current = setTimeout(() => {
+          freezeRef.current = false;
+        }, 1200);
+      }
 
-
-useEffect(() => {
-  if (!ready) return;
-
-  const update = () => {
-    const currentY = window.scrollY;
-    const directionDown = currentY > lastScrollY.current;
-    const sectionHeight = window.innerHeight * 2;
-    const progress = (smoothScrollY.current % sectionHeight) / sectionHeight;
-    const freezeZone = progress > 1.25 && progress < 1.33;
-
-    if (freezeZone && directionDown && !freezeRef.current) {
-      freezeRef.current = true;
-      freezeTimeout.current = setTimeout(() => {
-        freezeRef.current = false;
-      }, 1200);
-    }
-
-if (!freezeRef.current) {
-  smoothScrollY.current += (window.scrollY - smoothScrollY.current) * 0.1;
-  setScrollY(smoothScrollY.current);
-
-  const newIndex = Math.floor(smoothScrollY.current / sectionHeight);
-  setActiveIndex(newIndex % sections.length);
-
-  lastScrollY.current = currentY;
-}
-
-
-    requestAnimationFrame(update);
-  };
-
-  update();
-  return () => clearTimeout(freezeTimeout.current);
-}, [ready]);
-
+      if (!freezeRef.current) {
+        smoothScrollY.current += (window.scrollY - smoothScrollY.current) * 0.1;
+        setScrollY(smoothScrollY.current);
+        const newIndex = Math.floor(smoothScrollY.current / sectionHeight);
+        setActiveIndex(newIndex % sections.length);
+        lastScrollY.current = currentY;
+      }
+      requestAnimationFrame(update);
+    };
+    update();
+    return () => clearTimeout(freezeTimeout.current);
+  }, [ready]);
 
   if (!ready) return null;
 
@@ -130,32 +82,21 @@ if (!freezeRef.current) {
   const allSections = [...sections, ...sections, ...sections];
   const fullHeight = allSections.length * sectionHeight;
 
- const scrollToSection = (idx) => {
-  const sectionHeight = window.innerHeight * 2;
-  const targetProgress = 1.3;
-  const offsetY = idx * sectionHeight + sectionHeight * (targetProgress - 0.5);
-  window.scrollTo({ top: offsetY, behavior: "smooth" });
-};
-
+  const scrollToSection = (idx) => {
+    if (isMobile) return setCurrentIndex(idx);
+    const sectionHeight = window.innerHeight * 2;
+    const targetProgress = 1.3;
+    const offsetY = idx * sectionHeight + sectionHeight * (targetProgress - 0.5);
+    window.scrollTo({ top: offsetY, behavior: "smooth" });
+  };
 
   const offset = showButtons ? 0 : (isMobile ? 0 : (activeIndex !== null ? -(activeIndex * 7.5) + 21 : 0));
 
-
   return (
-    <main className="bg-black text-white overflow-x-hidden relative" style={{ height: `${fullHeight}px` }}>
-      
-  <div
-    className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none"
-    style={{ opacity: heroImageOpacity }}
-  >
-    <Image
-      src="/DNA3.png"
-      alt="DNA Background"
-      fill
-      style={{ objectFit: "cover" }}
-      priority
-    />
-  </div>
+    <main className="bg-black text-white overflow-x-hidden relative" style={{ height: isMobile ? "100vh" : `${fullHeight}px` }}>
+      <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none" style={{ opacity: heroImageOpacity }}>
+        <Image src="/DNA3.png" alt="DNA Background" fill style={{ objectFit: "cover" }} priority />
+      </div>
 
 
 
@@ -368,7 +309,23 @@ return (
 );
 
 })}
-
+{isMobile ? (
+  <div className="relative w-full h-[70vh] flex items-center justify-center">
+    {sections.map((item, index) => (
+      <div
+        key={index}
+        className={`absolute transition-opacity duration-700 ease-in-out px-6 text-center ${
+          activeIndex === index ? "opacity-100 z-20" : "opacity-0 z-10 pointer-events-none"
+        }`}
+      >
+        <div className="bg-gray-900 bg-opacity-80 rounded-2xl p-6 max-w-md mx-auto">
+          <h2 className="text-xl font-bold mb-4">{item.title}</h2>
+          <p className="text-sm leading-relaxed whitespace-pre-line">{item.text}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+) : null}
 
 
     {/* פוטר קבוע */}
