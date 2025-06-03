@@ -6,6 +6,7 @@ import React from "react";
 
 
 export default function HomePage() {
+   console.log("✅ DEPLOY CHECK: commit 5f31155 loaded");
   const sectionRefs = useRef([]);
   const sections = [
     { title: "אתרי רשת חכמים", text: "תכנון, עיצוב והקמת אתרי רשת מתוחכמים מותאמים לכל סוגי המסכים עם יכולת הטמעת פונקציות מתקדמות, ניהול מאגרי מידע וממשקי ניהול פנימיים." },
