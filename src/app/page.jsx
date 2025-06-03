@@ -1,9 +1,18 @@
-"use client"
+"use client";
+
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 export default function HomePage() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth < 640);
+    }
+  }, []);
+
   const sections = [
     { title: "אתרי רשת חכמים", text: "תכנון, עיצוב והקמת אתרי רשת מתוחכמים מותאמים לכל סוגי המסכים (רספונסיביים), עם יכולת הטמעת פונקציות מתקדמות, ניהול מאגרי מידע וממשקי ניהול פנימיים." },
     { title: "אפליקציות לטלפון", text: "אפליקציה לטלפון התפורה לעסק או לחיי היומיום שלכם - לדוגמה הוספת אפליקציה שתתחבר עם ממשקי הניהול שלכם לאוטומאציה ונגישות מכל מכשיר" },
@@ -13,6 +22,34 @@ export default function HomePage() {
     { title: "פיתוחים מבוססי בלוקצ'יין", text: "אפליקציות תקשורת בלתי חדירות מאובטחות בלוקצ'יין. אפליקציות לניהול ושמירת מידע עם אבטחת בלוקצ'יין ועוד פיתוחים שמנצלים את היתרונות הרבים של הבלוקצ'יין" },
   ];
 
+  if (isMobile) {
+    return (
+      <main className="relative bg-black text-white overflow-x-hidden">
+        <div className="fixed top-0 left-0 w-full h-screen -z-10">
+          <Image src="/DNA3.png" alt="DNA Background" fill style={{ objectFit: "cover", opacity: 0.3 }} priority />
+        </div>
+
+        <header className="text-center py-6 backdrop-blur-sm">
+          <h1 className="text-3xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff]">D&A code design</h1>
+          <p className="mt-2 text-base text-white/80">Coding a new world of possibilities</p>
+        </header>
+
+        {sections.map((section, i) => (
+          <section key={i} className="min-h-screen flex flex-col items-center justify-center px-4 text-center">
+            <div className="bg-slate-800/70 p-6 rounded-xl max-w-xl shadow-lg border border-orange-500">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4">{section.title}</h2>
+              <p className="text-base sm:text-lg leading-relaxed whitespace-pre-line">{section.text}</p>
+            </div>
+          </section>
+        ))}
+
+        <footer className="w-full text-center py-6 bg-gradient-to-b from-gray-800 to-black text-white">
+          <p className="text-lg">amosbahar@gmail.com • 054-3385089</p>
+        </footer>
+      </main>
+    );
+  }
+  
   const buttonStyles = [
     { from: "#001060", to: "#0208f3", innerFrom: "#302fff", innerTo: "#02045b" },
     { from: "#460151", to: "#cc00eb", innerFrom: "#79028b", innerTo: "#4d0159" },
@@ -30,7 +67,6 @@ export default function HomePage() {
   const lastScrollY = useRef(0);
   const freezeRef = useRef(false);
   const freezeTimeout = useRef(null);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
   const [showButtons, setShowButtons] = useState(true);
   const [heroImageOpacity, setHeroImageOpacity] = useState(1);
 
