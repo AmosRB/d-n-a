@@ -101,7 +101,14 @@ useEffect(() => {
   const offset = showButtons ? 0 : (isMobile ? 0 : (activeIndex !== null ? -(activeIndex * 7.5) + 21 : 0));
 
   return (
-    <main className="bg-black text-white overflow-x-hidden relative" style={{ height: isMobile ? "100vh" : `${fullHeight}px` }}>
+   <main
+  className="bg-black text-white overflow-x-hidden relative"
+  style={{
+    height: isMobile ? "auto" : `${fullHeight}px`,
+    minHeight: "100vh"
+  }}
+>
+
       <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none" style={{ opacity: heroImageOpacity }}>
         <Image src="/DNA3.png" alt="DNA Background" fill style={{ objectFit: "cover" }} priority />
       </div>
@@ -191,7 +198,23 @@ onClick={() => {
 
 
       {/* סקשנים */}
-{allSections.map((item, index) => {
+{isMobile ? (
+  <div className="w-full h-screen overflow-y-scroll snap-y snap-mandatory">
+    {sections.map((item, index) => (
+      <div
+        key={index}
+        ref={sectionRefs.current[index] ?? (sectionRefs.current[index] = React.createRef())}
+        className="h-screen flex items-center justify-center p-4 snap-start"
+      >
+        <div className="w-[85vw] max-w-[85vw] max-h-[80vh] bg-[#0f172a] border-4 border-orange-500 rounded-2xl p-6 text-white shadow-xl flex flex-col items-center justify-center text-center">
+          <h2 className="text-2xl font-bold mb-4">{item.title}</h2>
+          <p className="text-sm leading-relaxed whitespace-pre-line">{item.text}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+) : (
+  allSections.map((item, index) => {
   const isMobileStyle = isMobile;
 
   const sectionOffset = index * sectionHeight;
@@ -323,8 +346,10 @@ onClick={() => {
         </div>
       </div>
     </div>
-  );
-})}
+    );
+  }))
+}
+
 
 
 
