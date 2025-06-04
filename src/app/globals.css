@@ -44,4 +44,14 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+.mobile-section {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: all 0.7s ease;
+}
+
+.mobile-section.show {
+  opacity: 1;
+  transform: scale(1);
+}
 
