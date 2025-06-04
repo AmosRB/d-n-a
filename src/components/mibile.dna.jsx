@@ -140,10 +140,28 @@ export default function MobileApp() {
       </div>
 
       {/* כותרת מתחת ל-NAVBAR */}
-      <div className="fixed top-16 sm:top-24 left-1/2 transform -translate-x-1/2 z-[1001] text-center">
-        <h1 className="text-base sm:text-lg md:text-xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] typewriter w-fit mx-auto">
-          Coding a new world of possibilities
+        <div className="fixed top-0 left-0 w-full z-[3000] bg-transparent backdrop-blur-sm flex items-center justify-between px-6 py-4">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] w-fit mx-auto">
+          D&amp;A code design
         </h1>
+
+        <div className="fixed top-16 sm:top-24 left-1/2 transform -translate-x-1/2 z-[1001] text-center">
+          <h1 className="text-base sm:text-lg md:text-xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] typewriter w-fit mx-auto">
+            Coding a new world of possibilities
+          </h1>
+        </div>
+      <button
+  onClick={() => {
+    setActiveIndex(null); // מסתיר את הסקשנים
+    setHeroOpacity(1);    // רקע שקוף לגמרי
+    window.scrollTo({ top: 0, behavior: "smooth" }); // גלילה לראש הדף
+  }}
+  className="text-slate-500 text-xl sm:text-4xl md:text-4xl focus:outline-none"
+  style={{ fontWeight: 'bold' }}
+>
+  ☰
+</button>
+
       </div>
 
       {/* כפתורי ניווט (צד ימין) */}

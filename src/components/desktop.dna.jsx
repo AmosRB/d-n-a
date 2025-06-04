@@ -165,12 +165,17 @@ export default function HomePage() {
           </h1>
         </div>
         <button
-          onClick={() => setShowButtons(prev => !prev)}
-          className="text-slate-500 text-xl sm:text-3xl md:text-4xl focus:outline-none"
-          style={{ fontWeight: 'bold' }}
-        >
-          ☰
-        </button>
+  onClick={() => {
+    window.scrollTo({ top: 0, behavior: "smooth" }); // גלילה לראש הדף
+    setActiveIndex(null);                            // ביטול סקשן פעיל
+    setHeroOpacity(1);                               // תמונת רקע במלוא השקיפות
+  }}
+  className="text-slate-500 text-xl sm:text-3xl md:text-4xl focus:outline-none"
+  style={{ fontWeight: 'bold' }}
+>
+  ☰
+</button>
+
       </div>
 
       <div

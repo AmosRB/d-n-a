@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'D&A Site',
+  title: 'D&A code design',
   description: 'Scroll site with Tailwind',
 };
 
