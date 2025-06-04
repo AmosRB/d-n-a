@@ -61,27 +61,39 @@ sectionRefs.current = sections.map((_, i) => sectionRefs.current[i] ?? React.cre
   }, []);
 
 useEffect(() => {
-  if (!ready || typeof window === "undefined") return;
+  if (!ready) return;
 
-  let ticking = false;
+  const update = () => {
+    const currentY = window.scrollY;
+    const directionDown = currentY > lastScrollY.current;
+    const sectionHeight = window.innerHeight * 2;
+    const progress = (smoothScrollY.current % sectionHeight) / sectionHeight;
+    const freezeZone = progress > 1.25 && progress < 1.33;
 
-  const handleScroll = () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const currentY = window.scrollY;
-        const sectionHeight = window.innerHeight * 2;
-        const newIndex = Math.floor(currentY / sectionHeight);
-        setScrollY(currentY);
-        setActiveIndex(newIndex % sections.length);
-        ticking = false;
-      });
-      ticking = true;
+    if (freezeZone && directionDown && !freezeRef.current) {
+      freezeRef.current = true;
+      freezeTimeout.current = setTimeout(() => {
+        freezeRef.current = false;
+      }, 1200);
     }
+
+    if (!freezeRef.current) {
+      smoothScrollY.current += (window.scrollY - smoothScrollY.current) * 0.1;
+      setScrollY(smoothScrollY.current);
+
+      const newIndex = Math.floor(smoothScrollY.current / sectionHeight);
+      setActiveIndex(newIndex % sections.length);
+
+      lastScrollY.current = currentY;
+    }
+
+    requestAnimationFrame(update);
   };
 
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
+  requestAnimationFrame(update); // ← זו השורה החשובה להחזיר
+  return () => clearTimeout(freezeTimeout.current);
 }, [ready]);
+
 
 
   if (!ready) return null;
@@ -103,10 +115,12 @@ useEffect(() => {
   return (
    <main
   className="bg-black text-white overflow-x-hidden relative"
-  style={{
-    height: isMobile ? "auto" : `${fullHeight}px`,
-    minHeight: "100vh"
-  }}
+style={{
+  height: isMobile ? "auto" : `${fullHeight}px`,
+  minHeight: "100vh",
+  overflowY: isMobile ? "scroll" : "visible",
+}}
+
 >
 
       <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none" style={{ opacity: heroImageOpacity }}>
@@ -156,12 +170,13 @@ useEffect(() => {
             <div
               key={idx}
 onClick={() => {
-  if (isMobile && sectionRefs.current[idx]?.current) {
-    sectionRefs.current[idx].current.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (isMobile) {
+    sectionRefs.current[idx]?.scrollIntoView({ behavior: "smooth" });
   } else {
     scrollToSection(idx);
   }
 }}
+
 
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
@@ -200,10 +215,12 @@ onClick={() => {
       {/* סקשנים */}
 {isMobile ? (
   <div className="w-full h-screen overflow-y-scroll snap-y snap-mandatory">
+    <div className="h-screen snap-start" style={{ pointerEvents: "none" }} /> {/* פתיחה חלקה */}
+
     {sections.map((item, index) => (
       <div
         key={index}
-        ref={sectionRefs.current[index] ?? (sectionRefs.current[index] = React.createRef())}
+        ref={(el) => (sectionRefs.current[index] = el)}
         className="h-screen flex items-center justify-center p-4 snap-start"
       >
         <div className="w-[85vw] max-w-[85vw] max-h-[80vh] bg-[#0f172a] border-4 border-orange-500 rounded-2xl p-6 text-white shadow-xl flex flex-col items-center justify-center text-center">
@@ -215,10 +232,10 @@ onClick={() => {
   </div>
 ) : (
   allSections.map((item, index) => {
-  const isMobileStyle = isMobile;
+    const isMobileStyle = isMobile;
 
-  const sectionOffset = index * sectionHeight;
-  const relativeY = scrollY - sectionOffset + sectionHeight / 2;
+    const sectionOffset = index * sectionHeight;
+    const relativeY = scrollY - sectionOffset + sectionHeight / 2;
   const progress = relativeY / sectionHeight;
 
   let scale = 0.05;
