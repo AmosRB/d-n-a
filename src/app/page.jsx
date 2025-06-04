@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -62,32 +62,27 @@ sectionRefs.current = sections.map((_, i) => sectionRefs.current[i] ?? React.cre
 
 useEffect(() => {
   if (!ready || typeof window === "undefined") return;
-    const update = () => {
-      const currentY = window.scrollY;
-      const directionDown = currentY > lastScrollY.current;
-      const sectionHeight = window.innerHeight * 2;
-      const progress = (smoothScrollY.current % sectionHeight) / sectionHeight;
-      const freezeZone = progress > 1.25 && progress < 1.33;
 
-      if (freezeZone && directionDown && !freezeRef.current) {
-        freezeRef.current = true;
-        freezeTimeout.current = setTimeout(() => {
-          freezeRef.current = false;
-        }, 1200);
-      }
+  let ticking = false;
 
-      if (!freezeRef.current) {
-        smoothScrollY.current += (window.scrollY - smoothScrollY.current) * 0.1;
-        setScrollY(smoothScrollY.current);
-        const newIndex = Math.floor(smoothScrollY.current / sectionHeight);
+  const handleScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const currentY = window.scrollY;
+        const sectionHeight = window.innerHeight * 2;
+        const newIndex = Math.floor(currentY / sectionHeight);
+        setScrollY(currentY);
         setActiveIndex(newIndex % sections.length);
-        lastScrollY.current = currentY;
-      }
-      requestAnimationFrame(update);
-    };
-    update();
-    return () => clearTimeout(freezeTimeout.current);
-  }, [ready]);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [ready]);
+
 
   if (!ready) return null;
 
@@ -196,8 +191,9 @@ onClick={() => {
 
 
       {/* סקשנים */}
-{!isMobile &&
-  allSections.map((item, index) => {
+{allSections.map((item, index) => {
+  const isMobileStyle = isMobile;
+
   const sectionOffset = index * sectionHeight;
   const relativeY = scrollY - sectionOffset + sectionHeight / 2;
   const progress = relativeY / sectionHeight;
@@ -280,73 +276,56 @@ onClick={() => {
 
   }
 
-return (
-<div
-  key={index}
-  style={{
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: `translate(calc(-60% - ${isMobile ? 10 : 0}px), -50%) scale(${scale})`,
+  const baseStyle = {
+    transform: `scale(${scale})`,
     opacity,
     zIndex: 999 - index,
-  }}
-  className="transition-all duration-300 ease-out w-[62vw] max-w-[90vw] sm:w-[44.8vw] h-auto max-h-[80vh] sm:h-[36vh] rounded-2xl flex items-center justify-center text-center p-4 overflow-visible relative"
->
+  };
 
+  const layoutStyle = isMobileStyle
+    ? { position: "relative", width: "100%", margin: "auto", padding: "1rem 0" }
+    : {
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: `translate(calc(-60% - ${isMobile ? 10 : 0}px), -50%) scale(${scale})`,
+      };
 
-    {/* תוכן עם מסגרת כתומה */}
+  return (
     <div
+      key={index}
       style={{
-        borderColor,
-        backgroundColor,
-        boxShadow: glow,
-        position: "relative",
-        zIndex: 2,
+        ...baseStyle,
+        ...layoutStyle,
       }}
-      className="w-full h-full border-4 rounded-2xl flex items-center justify-center text-white"
+      className="transition-all duration-300 ease-out w-[62vw] max-w-[90vw] sm:w-[44.8vw] h-auto max-h-[80vh] sm:h-[36vh] rounded-2xl flex items-center justify-center text-center p-4 overflow-visible relative"
     >
-      <div className="p-6">
-    <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-4 break-words whitespace-normal text-center">
-  {item.title}
-</h2>
-<p
-  className="text-xs sm:text-base md:text-lg break-words whitespace-pre-line leading-relaxed text-center px-2 sm:px-4"
-  style={{ opacity: textOpacity }}
->
-  {item.text}
-</p>
-
-      </div>
-    </div>
-  </div>
-);
-
-})}
-
-{isMobile && (
-  <div
-    className="w-full min-h-screen overflow-y-scroll snap-y snap-mandatory"
-    onScroll={(e) => {
-      const scrollTop = e.target.scrollTop;
-      const opacity = Math.max(0.2, 1 - scrollTop / 300);
-      setHeroImageOpacity(opacity);
-    }}
-  >
-    {sections.map((item, index) => (
       <div
-        key={index}
-        ref={sectionRefs.current[index]}
-        className="h-[100vh] flex items-center justify-center p-4 snap-start transition-opacity duration-700"
+        style={{
+          borderColor,
+          backgroundColor,
+          boxShadow: glow,
+          position: "relative",
+          zIndex: 2,
+        }}
+        className="w-full h-full border-4 rounded-2xl flex items-center justify-center text-white"
       >
-        <div className="w-[85vw] max-w-[85vw] max-h-[80vh] bg-[#0f172a] border-4 border-orange-500 rounded-2xl p-6 text-white shadow-xl flex flex-col items-center justify-center text-center">
-          <h2 className="text-2xl font-bold mb-4">{item.title}</h2>
-          <p className="text-sm leading-relaxed whitespace-pre-line">{item.text}</p>
+        <div className="p-6">
+          <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-4 break-words whitespace-normal text-center">
+            {item.title}
+          </h2>
+          <p
+            className="text-xs sm:text-base md:text-lg break-words whitespace-pre-line leading-relaxed text-center px-2 sm:px-4"
+            style={{ opacity: textOpacity }}
+          >
+            {item.text}
+          </p>
         </div>
       </div>
-    ))}
-  </div>
-)}
+    </div>
+  );
+})}
+
 
 
 
