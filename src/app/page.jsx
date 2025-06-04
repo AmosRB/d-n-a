@@ -1,15 +1,11 @@
-"use client"; 
+"use client"
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import React from "react";
-
 
 export default function HomePage() {
-   console.log("✅ DEPLOY CHECK: commit 5f31155 loaded");
-  const sectionRefs = useRef([]);
   const sections = [
-    { title: "אתרי רשת חכמים", text: "תכנון, עיצוב והקמת אתרי רשת מתוחכמים מותאמים לכל סוגי המסכים עם יכולת הטמעת פונקציות מתקדמות, ניהול מאגרי מידע וממשקי ניהול פנימיים." },
+    { title: "אתרי רשת חכמים", text: "תכנון, עיצוב והקמת אתרי רשת מתוחכמים מותאמים לכל סוגי המסכים (רספונסיביים), עם יכולת הטמעת פונקציות מתקדמות, ניהול מאגרי מידע וממשקי ניהול פנימיים." },
     { title: "אפליקציות לטלפון", text: "אפליקציה לטלפון התפורה לעסק או לחיי היומיום שלכם - לדוגמה הוספת אפליקציה שתתחבר עם ממשקי הניהול שלכם לאוטומאציה ונגישות מכל מכשיר" },
     { title: "אפליקציות לניהול ושליטה", text: "אפליקציות לייעול, שמירה וארגון מידע בסביבה מקומית או בענן. אפליקציות לניהול מלאי, משימות, לוחות זמנים, מעקב ביצוע ושליטה תפורים לצרכיך לפי מידה" },
     { title: "פיצ'רים חכמים", text: "הוספת ממשקי ניהול לאפליקציות קיימות, שילוב אפליקציות חכמות, תוספים לדפדפנים בהתאמה אישית, כרטיסי ביקור דיגיטליים ועוד" },
@@ -30,35 +26,31 @@ export default function HomePage() {
   const [scrollY, setScrollY] = useState(0);
   const [activeIndex, setActiveIndex] = useState(null);
   const [hoveredIdx, setHoveredIdx] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const smoothScrollY = useRef(0);
   const lastScrollY = useRef(0);
   const freezeRef = useRef(false);
   const freezeTimeout = useRef(null);
-const [isMobile, setIsMobile] = useState(false);
-
-useEffect(() => {
-  const checkMobile = () => setIsMobile(window.innerWidth < 640);
-  checkMobile();
-  window.addEventListener("resize", checkMobile);
-  return () => window.removeEventListener("resize", checkMobile);
-}, []);
-
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
   const [showButtons, setShowButtons] = useState(true);
   const [heroImageOpacity, setHeroImageOpacity] = useState(1);
 
+  
+
+
   useEffect(() => setReady(true), []);
-sectionRefs.current = sections.map((_, i) => sectionRefs.current[i] ?? React.createRef());
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const opacity = Math.max(0.2, 1 - scrollTop / 300);
-      setHeroImageOpacity(opacity);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const handleScroll = () => {
+    const scrollTop = window.scrollY;
+    const opacity = Math.max(0.2, 1 - scrollTop / 300); // דעיכה עד 20%
+    setHeroImageOpacity(opacity);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
+
 
 useEffect(() => {
   if (!ready) return;
@@ -77,23 +69,23 @@ useEffect(() => {
       }, 1200);
     }
 
-    if (!freezeRef.current) {
-      smoothScrollY.current += (window.scrollY - smoothScrollY.current) * 0.1;
-      setScrollY(smoothScrollY.current);
+if (!freezeRef.current) {
+  smoothScrollY.current += (window.scrollY - smoothScrollY.current) * 0.1;
+  setScrollY(smoothScrollY.current);
 
-      const newIndex = Math.floor(smoothScrollY.current / sectionHeight);
-      setActiveIndex(newIndex % sections.length);
+  const newIndex = Math.floor(smoothScrollY.current / sectionHeight);
+  setActiveIndex(newIndex % sections.length);
 
-      lastScrollY.current = currentY;
-    }
+  lastScrollY.current = currentY;
+}
+
 
     requestAnimationFrame(update);
   };
 
-  requestAnimationFrame(update); // ← זו השורה החשובה להחזיר
+  update();
   return () => clearTimeout(freezeTimeout.current);
 }, [ready]);
-
 
 
   if (!ready) return null;
@@ -102,36 +94,42 @@ useEffect(() => {
   const allSections = [...sections, ...sections, ...sections];
   const fullHeight = allSections.length * sectionHeight;
 
-  const scrollToSection = (idx) => {
-    if (isMobile) return setCurrentIndex(idx);
-    const sectionHeight = window.innerHeight * 2;
-    const targetProgress = 1.3;
-    const offsetY = idx * sectionHeight + sectionHeight * (targetProgress - 0.5);
-    window.scrollTo({ top: offsetY, behavior: "smooth" });
-  };
+ const scrollToSection = (idx) => {
+  const sectionHeight = window.innerHeight * 2;
+  const targetProgress = 1.3;
+  const offsetY = idx * sectionHeight + sectionHeight * (targetProgress - 0.5);
+  window.scrollTo({ top: offsetY, behavior: "smooth" });
+};
+
 
   const offset = showButtons ? 0 : (isMobile ? 0 : (activeIndex !== null ? -(activeIndex * 7.5) + 21 : 0));
 
+
   return (
-   <main
-  className="bg-black text-white overflow-x-hidden relative"
-style={{
-  height: isMobile ? "auto" : `${fullHeight}px`,
-  minHeight: "100vh",
-  overflowY: isMobile ? "scroll" : "visible",
-}}
+    <main className="bg-black text-white overflow-x-hidden relative" style={{ height: `${fullHeight}px` }}>
+      
+  <div
+    className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none"
+    style={{ opacity: heroImageOpacity }}
+  >
+    <Image
+      src="/DNA3.png"
+      alt="DNA Background"
+      fill
+      style={{ objectFit: "cover" }}
+      priority
+    />
+  </div>
 
->
 
-      <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none" style={{ opacity: heroImageOpacity }}>
-        <Image src="/DNA3.png" alt="DNA Background" fill style={{ objectFit: "cover" }} priority />
-      </div>
 
       {/* NAVBAR שקוף */}
 <div className="fixed top-0 left-0 w-full z-[3000] bg-transparent backdrop-blur-sm flex items-center justify-between px-6 py-4">
 <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] w-fit mx-auto">
   D&amp;A code design
 </h1>
+
+
  
 <div className="fixed top-16 sm:top-24 left-1/2 transform -translate-x-1/2 z-[1001] text-center">
 
@@ -169,15 +167,7 @@ style={{
           return (
             <div
               key={idx}
-onClick={() => {
-  if (isMobile) {
-    sectionRefs.current[idx]?.scrollIntoView({ behavior: "smooth" });
-  } else {
-    scrollToSection(idx);
-  }
-}}
-
-
+              onClick={() => scrollToSection(idx)}
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
               className="w-16 h-16 sm:w-24 sm:h-24 rounded-[20%] flex items-center justify-center transition-all duration-300 cursor-pointer border-2"
@@ -204,6 +194,7 @@ onClick={() => {
     : section.title.replace(" ", "\n")}
 </p>
 
+
               </div>
             </div>
           );
@@ -213,29 +204,9 @@ onClick={() => {
 
 
       {/* סקשנים */}
-{isMobile ? (
-  <div className="w-full h-screen overflow-y-scroll snap-y snap-mandatory">
-    <div className="h-screen snap-start" style={{ pointerEvents: "none" }} /> {/* פתיחה חלקה */}
-
-    {sections.map((item, index) => (
-      <div
-        key={index}
-        ref={(el) => (sectionRefs.current[index] = el)}
-        className="h-screen flex items-center justify-center p-4 snap-start"
-      >
-        <div className="w-[85vw] max-w-[85vw] max-h-[80vh] bg-[#0f172a] border-4 border-orange-500 rounded-2xl p-6 text-white shadow-xl flex flex-col items-center justify-center text-center">
-          <h2 className="text-2xl font-bold mb-4">{item.title}</h2>
-          <p className="text-sm leading-relaxed whitespace-pre-line">{item.text}</p>
-        </div>
-      </div>
-    ))}
-  </div>
-) : (
-  allSections.map((item, index) => {
-    const isMobileStyle = isMobile;
-
-    const sectionOffset = index * sectionHeight;
-    const relativeY = scrollY - sectionOffset + sectionHeight / 2;
+{allSections.map((item, index) => {
+  const sectionOffset = index * sectionHeight;
+  const relativeY = scrollY - sectionOffset + sectionHeight / 2;
   const progress = relativeY / sectionHeight;
 
   let scale = 0.05;
@@ -316,58 +287,51 @@ onClick={() => {
 
   }
 
-  const baseStyle = {
-    transform: `scale(${scale})`,
+return (
+<div
+  key={index}
+  style={{
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: `translate(calc(-60% - ${isMobile ? 10 : 0}px), -50%) scale(${scale})`,
     opacity,
     zIndex: 999 - index,
-  };
+  }}
+  className="transition-all duration-300 ease-out w-[62vw] max-w-[90vw] sm:w-[44.8vw] h-auto max-h-[80vh] sm:h-[36vh] rounded-2xl flex items-center justify-center text-center p-4 overflow-visible relative"
+>
 
-  const layoutStyle = isMobileStyle
-    ? { position: "relative", width: "100%", margin: "auto", padding: "1rem 0" }
-    : {
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: `translate(calc(-60% - ${isMobile ? 10 : 0}px), -50%) scale(${scale})`,
-      };
 
-  return (
+    {/* ללא מסגרת שחורה */}
+
+    {/* תוכן עם מסגרת כתומה */}
     <div
-      key={index}
       style={{
-        ...baseStyle,
-        ...layoutStyle,
+        borderColor,
+        backgroundColor,
+        boxShadow: glow,
+        position: "relative",
+        zIndex: 2,
       }}
-      className="transition-all duration-300 ease-out w-[62vw] max-w-[90vw] sm:w-[44.8vw] h-auto max-h-[80vh] sm:h-[36vh] rounded-2xl flex items-center justify-center text-center p-4 overflow-visible relative"
+      className="w-full h-full border-4 rounded-2xl flex items-center justify-center text-white"
     >
-      <div
-        style={{
-          borderColor,
-          backgroundColor,
-          boxShadow: glow,
-          position: "relative",
-          zIndex: 2,
-        }}
-        className="w-full h-full border-4 rounded-2xl flex items-center justify-center text-white"
-      >
-        <div className="p-6">
-          <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-4 break-words whitespace-normal text-center">
-            {item.title}
-          </h2>
-          <p
-            className="text-xs sm:text-base md:text-lg break-words whitespace-pre-line leading-relaxed text-center px-2 sm:px-4"
-            style={{ opacity: textOpacity }}
-          >
-            {item.text}
-          </p>
-        </div>
+      <div className="p-6">
+    <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-4 break-words whitespace-normal text-center">
+  {item.title}
+</h2>
+<p
+  className="text-xs sm:text-base md:text-lg break-words whitespace-pre-line leading-relaxed text-center px-2 sm:px-4"
+  style={{ opacity: textOpacity }}
+>
+  {item.text}
+</p>
+
       </div>
     </div>
-    );
-  }))
-}
+  </div>
+);
 
-
+})}
 
 
 
@@ -381,6 +345,7 @@ onClick={() => {
   054-3385089
 
 </p>
+
 
           <a
   href="https://wa.me/972543385089?text=שלום עמוס, ראיתי את האתר ורציתי ליצור קשר"
