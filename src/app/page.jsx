@@ -6,12 +6,54 @@ import React from "react";
 
 export default function MobileApp() {
   const sections = [
-    { title: "אתרי רשת חכמים", text: "תכנון, עיצוב והקמת אתרי רשת מתוחכמים מותאמים לכל סוגי המסכים (רספונסיביים), עם יכולת הטמעת פונקציות מתקדמות, ניהול מאגרי מידע וממשקי ניהול פנימיים." },
-    { title: "אפליקציות לטלפון", text: "אפליקציה לטלפון התפורה לעסק או לחיי היומיום שלכם - לדוגמה הוספת אפליקציה שתתחבר עם ממשקי הניהול שלכם לאוטומאציה ונגישות מכל מכשיר" },
-    { title: "אפליקציות לניהול ושליטה", text: "אפליקציות לייעול, שמירה וארגון מידע בסביבה מקומית או בענן. אפליקציות לניהול מלאי, משימות, לוחות זמנים, מעקב ביצוע ושליטה תפורים לצרכיך לפי מידה" },
-    { title: "פיצ'רים חכמים", text: "הוספת ממשקי ניהול לאפליקציות קיימות, שילוב אפליקציות חכמות, תוספים לדפדפנים בהתאמה אישית, כרטיסי ביקור דיגיטליים ועוד" },
-    { title: "AI מנועי", text: "סוכני בינה מלאכותית לומדים בהתאמה אישית שיעבדו בשבילך מסביב לשעון" },
-    { title: "פיתוחים מבוססי בלוקצ'יין", text: "אפליקציות תקשורת בלתי חדירות מאובטחות בלוקצ'יין. אפליקציות לניהול ושמירת מידע עם אבטחת בלוקצ'יין ועוד פיתוחים שמנצלים את היתרונות הרבים של הבלוקצ'יין" },
+    {
+      title: "אתרי רשת חכמים",
+      text: [
+        "תכנון, עיצוב והקמת אתרי רשת מתוחכמים מותאמים לכל סוגי המכשירים.",
+        "תכנון והטמעת פונקציות יעודיות לפי דרישה.",
+        "ניהול מאגרי מידע וממשקי ניהול פנימיים."
+      ]
+    },
+    {
+      title: "אפליקציות לטלפון",
+      text: [
+        "אפליקציה לטלפון התפורה לעסק או לחיי היומיום שלכם.",
+        "הוספת אפליקציה שתתחבר עם ממשקי הניהול שלכם.",
+        "לאוטומאציה ונגישות מכל מכשיר."
+      ]
+    },
+    {
+      title: "אפליקציות לניהול ושליטה",
+      text: [
+        "אפליקציות לייעול, שמירה וארגון מידע בסביבה מקומית או בענן.",
+        "אפליקציות לניהול מלאי, משימות ולוחות זמנים.",
+        "מערכות מעקב על ביצוע וממשקי שליטה תפורים לצרכיך לפי מידה."
+      ]
+    },
+    {
+      title: "פיצ'רים חכמים",
+      text: [
+        "הוספת ממשקי ניהול לאפליקציות קיימות.",
+        "שילוב אפליקציות ניהול ושליטה חכמות.",
+        "תוספים לדפדפנים בהתאמה אישית.",
+        "כרטיסי ביקור דיגיטליים ועוד."
+      ]
+    },
+    {
+      title: "AI מנועי",
+      text: [
+        "סוכני בינה מלאכותית לומדים.",
+        "בוטים בהתאמה אישית שיעבדו בשבילך מסביב לשעון."
+      ]
+    },
+    {
+      title: "פיתוחים מבוססי בלוקצ'יין",
+      text: [
+        " אפליקציות תקשורת בלתי חדירות מאובטחות בלוקצ'יין.",
+        "אפליקציות לניהול ושמירת מידע עם אבטחת בלוקצ'יין.",
+        "עוד פיתוחים שמנצלים את היתרונות הרבים של הבלוקצ'יין."
+      ]
+    },
   ];
 
   const buttonStyles = [
@@ -25,10 +67,8 @@ export default function MobileApp() {
 
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredIdx, setHoveredIdx] = useState(null);
-  // **שינוי כאן: מתחילים מ-null כדי שאף סקשן לא יהיה פעיל בהתחלה**
   const [activeIndex, setActiveIndex] = useState(null);
-  // **שינוי כאן: מתחילים מ-1 (100% שקיפות) כפי שנקבע קודם**
-  const [heroOpacity, setHeroOpacity] = useState(1); 
+  const [heroOpacity, setHeroOpacity] = useState(1);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
@@ -37,23 +77,25 @@ export default function MobileApp() {
 
     const handleScroll = () => {
       const scrollTop = window.scrollY;
+      const sectionHeight = window.innerHeight;
+      const numSections = sections.length; // הוספנו את numSections כאן
 
-      // לוגיקה לשקיפות רקע: 100% אם בראש העמוד, 20% אם גוללים.
       const newOpacity = scrollTop === 0 ? 1 : 0.2;
       setHeroOpacity(newOpacity);
 
-      // חישוב סקשן פעיל:
-      // אם גוללים מ-0 (אחרי שמתחילה גלילה), נחשב את האינדקס.
-      // אם scrollTop הוא 0, אין סקשן פעיל (null).
-      const sectionHeight = window.innerHeight;
       let newActiveIndex;
       if (scrollTop === 0) {
-        newActiveIndex = null; // אין סקשן פעיל כשאנחנו בראש הדף
+        newActiveIndex = null;
       } else {
-        newActiveIndex = Math.floor((scrollTop + sectionHeight / 2) / sectionHeight);
-        // ודא שהאינדקס חוקי; אם לא, נשאר null או נחזור ל-0 אם הגלילה קטנה מ-0
-        if (newActiveIndex < 0 || newActiveIndex >= sections.length) {
-            newActiveIndex = null; // מחוץ לטווח הסקשנים
+        let baseIndex = Math.floor((scrollTop + sectionHeight / 2) / sectionHeight);
+
+        // לוגיקת גלילה מעגלית (לופ)
+        if (baseIndex >= numSections) {
+            newActiveIndex = 0; // חזרה לסקשן הראשון
+        } else if (baseIndex < 0) {
+            newActiveIndex = numSections - 1; // קפיצה לסקשן האחרון
+        } else {
+            newActiveIndex = baseIndex;
         }
       }
       setActiveIndex(newActiveIndex);
@@ -61,14 +103,11 @@ export default function MobileApp() {
 
     window.addEventListener("scroll", handleScroll);
 
-    // טיפול במקרה של רענון/טעינה:
-    // נגלול לראש הדף ונוודא שאין סקשן פעיל.
     const initialScroll = () => {
         window.scrollTo({ top: 0, behavior: 'instant' });
-        setActiveIndex(null); // ודא שאף סקשן לא פעיל במצב ההתחלתי
+        setActiveIndex(null);
     };
     window.addEventListener('load', initialScroll);
-
 
     return () => {
       window.removeEventListener("resize", checkMobile);
@@ -173,8 +212,7 @@ export default function MobileApp() {
               width: "70vw",
               maxWidth: "90vw",
               maxHeight: "80vh",
-              transition: "opacity 1.5s ease, box-shadow 1.0s ease",
-              // הסקשן גלוי רק אם activeIndex שווה לאינדקס שלו
+              transition: "opacity 1s ease, box-shadow 0.6s ease",
               opacity: activeIndex === index ? 1 : 0,
               pointerEvents: activeIndex === index ? "auto" : "none",
               position: "absolute",
@@ -191,20 +229,32 @@ export default function MobileApp() {
                 : "none",
             }}
           >
-            <h2 className="text-center text-2xl font-bold mb-4">{item.title}</h2>
-            <p
+            <h2 className="text-center text-3xl font-bold mb-4">{item.title}</h2>
+            <div
               dir="rtl"
-              className="text-right text-sm leading-relaxed overflow-y-auto"
+              className="text-right text-base leading-relaxed overflow-y-auto"
               style={{
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-word",
-                overflowWrap: "break-word",
                 lineHeight: "1.75",
                 maxHeight: "calc(80vh - 6rem)",
+                width: "100%",
               }}
             >
-              {item.text}
-            </p>
+              {/* מפרסרים את המערך ליצירת כדורים */}
+              {item.text.map((sentence, sIdx) => (
+                <div key={sIdx} className="flex items-start mb-2 last:mb-0">
+                  {/* שינוי כאן: הוספנו margin-left מפורש לכדור, או margin-right לטקסט */}
+                  <span
+                    className="w-2 h-2 rounded-full inline-block mt-[0.65rem] flex-shrink-0"
+                    style={{
+                      backgroundColor: '#00bcd4',
+                      marginLeft: '0.5rem' // הוספת מרווח שמאלי לכדור כדי להרחיק אותו מהטקסט שמימינו (בגלל dir="rtl")
+                    }}
+                  />
+                  {/* שינוי כאן: נסיר את ה-display: 'inline' ונשתמש ב-flexbox */}
+                  <span style={{ display: 'block', flexGrow: 1 }}>{sentence}</span> {/* נשנה ל-span עם block כדי לאפשר שבירת שורה ושימוש ב-flex-grow */}
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
