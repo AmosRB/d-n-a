@@ -30,9 +30,18 @@ export default function HomePage() {
   const lastScrollY = useRef(0);
   const freezeRef = useRef(false);
   const freezeTimeout = useRef(null);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+
   const [showButtons, setShowButtons] = useState(true);
   const [heroImageOpacity, setHeroImageOpacity] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const checkMobile = () => setIsMobile(window.innerWidth < 640);
+  checkMobile();
+  window.addEventListener("resize", checkMobile);
+  return () => window.removeEventListener("resize", checkMobile);
+}, []);
+
 
   
 
@@ -53,7 +62,8 @@ export default function HomePage() {
 
 
 useEffect(() => {
-  if (!ready) return;
+ if (!ready || isMobile || typeof window === "undefined") return;
+
 
   const update = () => {
     const currentY = window.scrollY;
@@ -85,7 +95,7 @@ if (!freezeRef.current) {
 
   update();
   return () => clearTimeout(freezeTimeout.current);
-}, [ready]);
+}, [ready, isMobile]);
 
 
   if (!ready) return null;
@@ -112,14 +122,15 @@ if (!freezeRef.current) {
     className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none"
     style={{ opacity: heroImageOpacity }}
   >
-    <Image
-      src="/DNA3.png"
-      alt="DNA Background"
-      fill
-      style={{ objectFit: "cover" }}
-      priority
-    />
-  </div>
+ <Image
+  src={isMobile ? "/DNA3-mobile.png" : "/DNA3.png"}
+  alt="DNA Background"
+  fill
+  style={{ objectFit: "cover" }}
+  priority
+/>
+</div>
+
 
 
 
