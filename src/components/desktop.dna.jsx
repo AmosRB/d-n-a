@@ -75,6 +75,14 @@ export default function HomePage() {
   const freezeTimeout = useRef(null);
   const [showButtons, setShowButtons] = useState(true);
   const [heroOpacity, setHeroOpacity] = useState(1);
+   const [sectionHeight, setSectionHeight] = useState(0);
+
+  useEffect(() => {
+  if (typeof window !== "undefined") {
+    setSectionHeight(window.innerHeight * 2);
+  }
+}, []);
+
 
   useEffect(() => setReady(true), []);
 
@@ -84,7 +92,7 @@ export default function HomePage() {
     const update = () => {
       const currentY = window.scrollY;
       const directionDown = currentY > lastScrollY.current;
-      const sectionHeight = window.innerHeight * 2;
+    
       const progress = (smoothScrollY.current % sectionHeight) / sectionHeight;
       const freezeZone = progress > 1.25 && progress < 1.33;
 
@@ -122,18 +130,19 @@ export default function HomePage() {
   }, [ready]);
 
 
-  if (!ready) return null;
-
-  const sectionHeight = window.innerHeight * 2;
   const allSections = [...sections, ...sections, ...sections];
   const fullHeight = allSections.length * sectionHeight;
+  if (!ready || sectionHeight === 0) return null;
 
-  const scrollToSection = (idx) => {
-    const sectionHeight = window.innerHeight * 2;
-    const targetProgress = 1.3;
-    const offsetY = idx * sectionHeight + sectionHeight * (targetProgress - 0.5);
-    window.scrollTo({ top: offsetY, behavior: "smooth" });
-  };
+
+
+
+ const scrollToSection = (idx) => {
+  const targetProgress = 1.3;
+  const offsetY = idx * sectionHeight + sectionHeight * (targetProgress - 0.5);
+  window.scrollTo({ top: offsetY, behavior: "smooth" });
+};
+
 
   const offset = showButtons ? 0 : (activeIndex !== null ? -(activeIndex * 7.5) + 21 : 0);
 
@@ -180,7 +189,7 @@ export default function HomePage() {
 
       <div
         className="fixed z-[1001] flex flex-col items-center gap-4 sm:gap-[1.75rem] transition-transform duration-500"
-        style={{ top: '25vh', right: '5vw', transform: `translateY(${offset}em)` }}
+        style={{ top: '18vh', right: '5vw', transform: `translateY(${offset}em)` }}
       >
         {sections.map((section, idx) => {
           const style = buttonStyles[idx];

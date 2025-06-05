@@ -1,21 +1,20 @@
+// src/app/layout.tsx
+import React from "react"; // ← חובה אם לא משתמשים ב־"use client"
 import './globals.css';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata = {
-  title: 'D&A code design',
+  title: 'D&A Site',
   description: 'Scroll site with Tailwind',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
-        />
-      </head>
+      <head />
       <body className="overflow-x-hidden">
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
