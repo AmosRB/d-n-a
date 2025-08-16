@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HomePage() {
   const sections = [
@@ -113,7 +114,6 @@ export default function HomePage() {
         lastScrollY.current = currentY;
       }
 
-      // לוגיקה לשינוי שקיפות הרקע
       if (currentY <= 50) {
         const opacityProgress = currentY / 50;
         setHeroOpacity(1 - (0.8 * opacityProgress));
@@ -121,21 +121,17 @@ export default function HomePage() {
         setHeroOpacity(0.2);
       }
 
-
       requestAnimationFrame(update);
     };
 
     update();
     return () => clearTimeout(freezeTimeout.current);
-  }, [ready]);
+  }, [ready, sectionHeight, sections.length]);
 
 
   const allSections = [...sections, ...sections, ...sections];
   const fullHeight = allSections.length * sectionHeight;
   if (!ready || sectionHeight === 0) return null;
-
-
-
 
  const scrollToSection = (idx) => {
   const targetProgress = 1.3;
@@ -143,26 +139,23 @@ export default function HomePage() {
   window.scrollTo({ top: offsetY, behavior: "smooth" });
 };
 
-
   const offset = showButtons ? 0 : (activeIndex !== null ? -(activeIndex * 7.5) + 21 : 0);
 
   return (
     <main className="bg-black text-white overflow-x-hidden relative" style={{ height: `${fullHeight}px` }}>
-      {/* תמונת רקע */}
       <div
         className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none transition-opacity duration-700"
         style={{ opacity: heroOpacity }}
       >
         <Image
-          src="/DNA3.png" // הנתיב לתמונה שלך
+          src="/DNA3.png"
           alt="DNA Background"
-          fill // ממלא את כל הדיב
-          style={{ objectFit: "cover" }} // מכסה את כל השטח בלי לעוות
-          priority // טוען את התמונה בעדיפות גבוהה
+          fill
+          style={{ objectFit: "cover" }}
+          priority
         />
       </div>
 
-      {/* NAVBAR שקוף */}
       <div className="fixed top-0 left-0 w-full z-[3000] bg-transparent backdrop-blur-sm flex items-center justify-between px-6 py-4">
         <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] w-fit mx-auto">
           D&amp;A code design
@@ -174,16 +167,16 @@ export default function HomePage() {
           </h1>
         </div>
         <button
-  onClick={() => {
-    window.scrollTo({ top: 0, behavior: "smooth" }); // גלילה לראש הדף
-    setActiveIndex(null);                            // ביטול סקשן פעיל
-    setHeroOpacity(1);                               // תמונת רקע במלוא השקיפות
-  }}
-  className="text-slate-500 text-xl sm:text-3xl md:text-4xl focus:outline-none"
-  style={{ fontWeight: 'bold' }}
->
-  ☰
-</button>
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            setActiveIndex(null);
+            setHeroOpacity(1);
+          }}
+          className="text-slate-500 text-xl sm:text-3xl md:text-4xl focus:outline-none"
+          style={{ fontWeight: 'bold' }}
+        >
+          ☰
+        </button>
 
       </div>
 
@@ -244,6 +237,7 @@ export default function HomePage() {
         const sectionOffset = index * sectionHeight;
         const relativeY = scrollY - sectionOffset + sectionHeight / 2;
         const progress = relativeY / sectionHeight;
+        const currentIndex = index % sections.length;
 
         let scale = 0.05;
         let opacity = 0;
@@ -251,25 +245,21 @@ export default function HomePage() {
         let backgroundColor = "rgba(15, 23, 42, 0)";
         let textOpacity = 0;
         let glow = "";
-        let blackBorderOpacity = 0;
-
+        
         if (scrollY > 50) {
           if (progress < 0.75) {
             scale = 0.05 + progress * 1.1176;
             opacity = Math.max(progress * 1.2, 0.05);
           } else if (progress < 1.35) {
-            // שלב 2
-            scale = progress >= 1.25 && progress < 1.4 ? 1.1 : 1; // עצירה קלה לקראת הסוף
+            scale = progress >= 1.25 && progress < 1.4 ? 1.1 : 1;
             opacity = 1;
 
-            // הילה חזקה לרגע קצר בתחילת שלב 2
             if (progress > 0.84 && progress < 0.90) {
               glow = `0 0 120px rgba(255, 200, 50, 1), 0 0 60px rgba(255, 200, 50, 0.85)`;
             } else if (progress >= 0.75 && progress < 1.35) {
               glow = `0 0 60px rgba(255, 240, 150, 0.5)`;
             }
 
-            // מסגרת כתומה הדרגתית
             if (progress < 0.95) {
               const bProgress = (progress - 0.75) / 0.25;
               borderColor = `rgba(249, 115, 22, ${bProgress.toFixed(2)})`;
@@ -277,7 +267,6 @@ export default function HomePage() {
               borderColor = "#f97316";
             }
 
-            // רקע עולה
             if (progress < 1.0) {
               backgroundColor = "rgba(15, 23, 42, 0)";
             } else if (progress < 1.15) {
@@ -287,7 +276,6 @@ export default function HomePage() {
               backgroundColor = "rgba(15, 23, 42, 1)";
             }
 
-            // טקסט
             if (progress < 1.15) {
               textOpacity = 0;
             } else if (progress < 1.3) {
@@ -296,81 +284,77 @@ export default function HomePage() {
             } else {
               textOpacity = 1;
             }
-
-            // מסגרת שחורה - לפני ואחרי כתום
-            if (progress >= 0.65 && progress <= 1.5) {
-              const peak = 1.0;
-              blackBorderOpacity = 1 - Math.abs(progress - peak) * 2.3;
-              blackBorderOpacity = Math.max(0, Math.min(1, blackBorderOpacity));
-            }
           } else {
             const exitProgress = (progress - 1.4) / 0.3;
             scale = 1 + exitProgress * 2;
             opacity = 1 - exitProgress;
 
-            // דעיכת מסגרת
             const borderFade = Math.max(0, 1 - exitProgress * 2);
             borderColor = `rgba(249, 115, 22, ${borderFade.toFixed(2)})`;
 
-            // דעיכת רקע
             const bgFade = Math.max(0, 1 - exitProgress * 1.5);
             backgroundColor = `rgba(15, 23, 42, ${bgFade.toFixed(2)})`;
 
-            // דעיכת טקסט
             textOpacity = Math.max(0, 1 - exitProgress * 2);
           }
         }
 
-        return (
-          <div
-            key={index}
-            style={{
-              position: "fixed",
-              top: "50%",
-              left: "50%",
-              transform: `translate(calc(-60% - 0px), -50%) scale(${scale})`,
-              opacity,
-              zIndex: 999 - index,
-            }}
-            className="transition-all duration-300 ease-out w-[62vw] max-w-[90vw] sm:w-[44.8vw] h-auto max-h-[80vh] sm:h-[36vh] rounded-2xl flex items-center justify-center text-center p-4 overflow-visible relative"
-          >
-            {/* ללא מסגרת שחורה */}
+        const isPhoneAppsSection = item.title === "אפליקציות לטלפון";
 
-            {/* תוכן עם מסגרת כתומה */}
-            <div
-              style={{
-                borderColor,
-                backgroundColor,
-                boxShadow: glow,
-                position: "relative",
-                zIndex: 2,
-              }}
-              className="w-full h-full border-4 rounded-2xl flex items-center justify-center text-white"
-            >
-              <div className="p-6">
-                <h2 className="text-xl sm:text-3xl font-bold mb-4 break-words whitespace-normal text-center">
-                  {item.title}
-                </h2>
-                <p
-                  className="text-xs sm:text-base whitespace-pre-line leading-relaxed text-center px-2 sm:px-4"
-                  style={{ opacity: textOpacity, direction: 'rtl' }} // הוספת direction: rtl
-                >
-                  {/* לולאה על המערך text וחלוקה לשורות */}
-                  {item.text.map((line, lineIdx) => (
-                    <span key={lineIdx} className="flex items-start justify-center">
-                      <span
-                        className="w-2 h-2 rounded-full inline-block mt-[0.65rem] flex-shrink-0"
-                        style={{
-                          backgroundColor: '#00bcd4',
-                          marginLeft: '0.5rem' // שינוי ל-marginLeft כדי שיופיע מימין לכדור בגלל direction: rtl
-                        }}
-                      />
-                      {line}
-                    </span>
-                  ))}
-                </p>
-              </div>
+        const content = (
+          <div
+            style={{
+              borderColor,
+              backgroundColor,
+              boxShadow: glow,
+              position: "relative",
+              zIndex: 2,
+            }}
+            className="w-full h-full border-4 rounded-2xl flex items-center justify-center text-white"
+          >
+            <div className="p-6">
+              <h2 className="text-xl sm:text-3xl font-bold mb-4 break-words whitespace-normal text-center">
+                {item.title}
+              </h2>
+              <p
+                className="text-xs sm:text-base whitespace-pre-line leading-relaxed text-center px-2 sm:px-4"
+                style={{ opacity: textOpacity, direction: 'rtl' }}
+              >
+                {item.text.map((line, lineIdx) => (
+                  <span key={lineIdx} className="flex items-start justify-center">
+                    <span
+                      className="w-2 h-2 rounded-full inline-block mt-[0.65rem] flex-shrink-0"
+                      style={{
+                        backgroundColor: '#00bcd4',
+                        marginLeft: '0.5rem'
+                      }}
+                    />
+                    {line}
+                  </span>
+                ))}
+              </p>
             </div>
+          </div>
+        );
+
+        const wrapperStyle = {
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: `translate(calc(-60% - 0px), -50%) scale(${scale})`,
+          opacity,
+          zIndex: 999 - index,
+          // התיקון: מאפשר לחיצה רק על החלון הפעיל
+          pointerEvents: activeIndex === currentIndex ? 'auto' : 'none',
+        };
+
+        return isPhoneAppsSection ? (
+          <Link key={index} href="/phone-apps" style={wrapperStyle} className="w-[62vw] max-w-[90vw] sm:w-[44.8vw] h-auto max-h-[80vh] sm:h-[36vh] rounded-2xl flex items-center justify-center text-center p-4 overflow-visible relative">
+            {content}
+          </Link>
+        ) : (
+          <div key={index} style={wrapperStyle} className="w-[62vw] max-w-[90vw] sm:w-[44.8vw] h-auto max-h-[80vh] sm:h-[36vh] rounded-2xl flex items-center justify-center text-center p-4 overflow-visible relative">
+            {content}
           </div>
         );
       })}
