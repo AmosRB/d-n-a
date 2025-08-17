@@ -1,10 +1,41 @@
 import React from 'react';
 import Link from 'next/link';
 
+// כאן נגדיר אובייקט עם סגנונות בסיסיים ישירות בקובץ
+// כדי שנוכל להשתמש בהם בלי קובץ CSS חיצוני
+const styles = {
+    container: {
+        backgroundColor: '#f4f4f9',
+        color: '#333',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '40px 20px',
+        lineHeight: '1.6',
+    },
+    content: {
+        backgroundColor: '#ffffff',
+        padding: '40px',
+        borderRadius: '8px',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+        maxWidth: '800px',
+        width: '100%',
+    },
+    link: {
+        color: '#0070f3',
+        textDecoration: 'none',
+    },
+    homeLink: {
+        marginTop: '30px',
+        textAlign: 'center',
+    }
+};
+
 const PrivacyPolicy = () => {
     return (
-        <div className={styles.container}>
-            <div className={styles.content}>
+        // שינינו את השימוש ב-className ל-style
+        <div style={styles.container}>
+            <div style={styles.content}>
                 <h1>Privacy Policy for Tarot AI</h1>
                 <p><strong>Effective Date:</strong> August 17, 2025</p>
 
@@ -35,7 +66,6 @@ const PrivacyPolicy = () => {
                     <li>To communicate important updates or information regarding your account.</li>
                 </ul>
 
-                {/* --- הסעיף החדש שהוספנו --- */}
                 <h2>3. User Data Deletion</h2>
                 <p>
                     In accordance with Meta Platform's policy, we provide a straightforward way for you to request the deletion of your data.
@@ -43,7 +73,6 @@ const PrivacyPolicy = () => {
                 <p>
                     To delete your account and all associated data from Tarot AI, please send an email to <strong>amosbahar@gmail.com</strong> with the subject line "User Data Deletion Request". We will process your request and permanently delete your data within 7 business days.
                 </p>
-                {/* --- סוף הסעיף החדש --- */}
 
                 <h2>4. Data Security</h2>
                 <p>
@@ -59,10 +88,10 @@ const PrivacyPolicy = () => {
                 <p>
                     If you have any questions about this Privacy Policy, please contact us at:
                     <br />
-                    <a href="mailto:amosbahar@gmail.com" className={styles.link}>amosbahar@gmail.com</a>
+                    <a href="mailto:amosbahar@gmail.com" style={styles.link}>amosbahar@gmail.com</a>
                 </p>
 
-                <div className={styles.homeLink}>
+                <div style={styles.homeLink}>
                     <Link href="/">
                         Back to Home
                     </Link>
