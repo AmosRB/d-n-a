@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './privacy.module.css';
 import Link from 'next/link';
 
 const PrivacyPolicy = () => {
