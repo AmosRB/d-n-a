@@ -152,7 +152,8 @@ export default function DeleteAccountPage() {
         return (
           <div className="text-center">
             <h2 className="text-2xl font-semibold text-green-600">Account Deleted Successfully</h2>
-            <p className="text-gray-700 mt-2">We're sorry to see you go.</p>
+            {/* --- FIX: Replaced ' with &apos; to fix the build error --- */}
+            <p className="text-gray-700 mt-2">We&apos;re sorry to see you go.</p>
             <Link href="/" className="text-blue-600 hover:underline mt-6 inline-block">
               Back to Home Page
             </Link>
