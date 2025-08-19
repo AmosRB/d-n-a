@@ -67,8 +67,9 @@ export default function MobileApp() {
   ];
 
   const [isMobile, setIsMobile] = useState(false);
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+ const [hoveredIdx, setHoveredIdx] = useState(null);
+const [activeIndex, setActiveIndex] = useState(null);
+
   const [heroOpacity, setHeroOpacity] = useState(1);
 
   useEffect(() => {
@@ -84,7 +85,8 @@ export default function MobileApp() {
       const newOpacity = scrollTop === 0 ? 1 : 0.2;
       setHeroOpacity(newOpacity);
 
-      let newActiveIndex: number | null;
+      let newActiveIndex;
+
       if (scrollTop === 0) {
         newActiveIndex = null;
       } else {
@@ -220,6 +222,27 @@ export default function MobileApp() {
           <a href="mailto:amosbahar@gmail.com" className="absolute flex items-center gap-2" style={{ left: isMobile ? "10px" : "25%", top: 10, transform: "translateY(-100%)", background: "linear-gradient(to bottom, rgb(17, 81, 177), rgb(15, 22, 54))", color: "#f97316", fontWeight: "bold", padding: isMobile ? "0.25rem 0.5rem" : "0.5rem 1.25rem", fontSize: isMobile ? "0.75rem" : "1rem", borderRadius: "0.75rem", boxShadow: "0 4px 14px rgba(4, 7, 11, 0.4), 0 6px 20px rgba(22, 9, 9, 0.3)", transition: "all 0.3s ease" }}>
             <Image src="/Gmail_Icon.png" alt="Mail Icon" width={30} height={30} style={{ opacity: 0.9, transform: "translateY(-4px)", zIndex: 50, pointerEvents: "none" }} />
           </a>
+          <a
+  href="/rememo-delete"
+  className="absolute flex items-center gap-2"
+  style={{
+    bottom: "10px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    background: "linear-gradient(to bottom, #333, #111)",
+    color: "#f97316",
+    fontWeight: "bold",
+    padding: "0.5rem 1.25rem",
+    fontSize: "0.9rem",
+    borderRadius: "0.75rem",
+    boxShadow: "0 4px 14px rgba(0,0,0,0.4)",
+    transition: "all 0.3s ease",
+  }}
+>
+  ReMEMO account &amp; data delete
+</a>
+<p>© 2025 D&A Code Design. All rights reserved.</p>
+
         </div>
       </footer>
     </main>

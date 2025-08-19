@@ -1,5 +1,5 @@
-// desktop.dna.jsx
-"use client"
+// src/components/desktop.dna.jsx
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -18,9 +18,9 @@ export default function HomePage() {
     {
       title: "אפליקציות לטלפון",
       text: [
-        "אפליקציה לטלפון התפורה לעסק או לחיי היומיום שלכם.",
-        "הוספת אפליקציה שתתחבר עם ממשקי הניהול שלכם.",
-        "לאוטומאציה ונגישות מכל מכשיר."
+        "אפליקציית מסרים מתוזמנים מתוחכמת שתשנה את אופן ההתנהלות שלכם בחיים.",
+        "האפליקציה מצויינת לעזרה לאנשים עם בעיות זיכרון, דמנציה, בני משפחה אחרים שצריכים תזכורות,",
+        "שימושים עיסקיים רבים ואפילו תזכורות עצמיות."
       ]
     },
     {
@@ -76,14 +76,11 @@ export default function HomePage() {
   const freezeTimeout = useRef(null);
   const [showButtons, setShowButtons] = useState(true);
   const [heroOpacity, setHeroOpacity] = useState(1);
-   const [sectionHeight, setSectionHeight] = useState(0);
+  const [sectionHeight, setSectionHeight] = useState(0);
 
   useEffect(() => {
-  if (typeof window !== "undefined") {
-    setSectionHeight(window.innerHeight * 2);
-  }
-}, []);
-
+    if (typeof window !== "undefined") setSectionHeight(window.innerHeight * 2);
+  }, []);
 
   useEffect(() => setReady(true), []);
 
@@ -93,24 +90,20 @@ export default function HomePage() {
     const update = () => {
       const currentY = window.scrollY;
       const directionDown = currentY > lastScrollY.current;
-    
+
       const progress = (smoothScrollY.current % sectionHeight) / sectionHeight;
       const freezeZone = progress > 1.25 && progress < 1.33;
 
       if (freezeZone && directionDown && !freezeRef.current) {
         freezeRef.current = true;
-        freezeTimeout.current = setTimeout(() => {
-          freezeRef.current = false;
-        }, 1200);
+        freezeTimeout.current = setTimeout(() => { freezeRef.current = false; }, 1200);
       }
 
       if (!freezeRef.current) {
         smoothScrollY.current += (window.scrollY - smoothScrollY.current) * 0.1;
         setScrollY(smoothScrollY.current);
-
         const newIndex = Math.floor(smoothScrollY.current / sectionHeight);
         setActiveIndex(newIndex % sections.length);
-
         lastScrollY.current = currentY;
       }
 
@@ -128,212 +121,108 @@ export default function HomePage() {
     return () => clearTimeout(freezeTimeout.current);
   }, [ready, sectionHeight, sections.length]);
 
-
   const allSections = [...sections, ...sections, ...sections];
   const fullHeight = allSections.length * sectionHeight;
   if (!ready || sectionHeight === 0) return null;
 
- const scrollToSection = (idx) => {
-  const targetProgress = 1.3;
-  const offsetY = idx * sectionHeight + sectionHeight * (targetProgress - 0.5);
-  window.scrollTo({ top: offsetY, behavior: "smooth" });
-};
+  const scrollToSection = (idx) => {
+    const targetProgress = 1.3;
+    const offsetY = idx * sectionHeight + sectionHeight * (targetProgress - 0.5);
+    window.scrollTo({ top: offsetY, behavior: "smooth" });
+  };
 
   const offset = showButtons ? 0 : (activeIndex !== null ? -(activeIndex * 7.5) + 21 : 0);
 
   return (
     <main className="bg-black text-white overflow-x-hidden relative" style={{ height: `${fullHeight}px` }}>
-      <div
-        className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none transition-opacity duration-700"
-        style={{ opacity: heroOpacity }}
-      >
-        <Image
-          src="/DNA3.png"
-          alt="DNA Background"
-          fill
-          style={{ objectFit: "cover" }}
-          priority
-        />
+      {/* Background */}
+      <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none transition-opacity duration-700" style={{ opacity: heroOpacity }}>
+        <Image src="/DNA3.png" alt="DNA Background" fill style={{ objectFit: "cover" }} priority />
       </div>
 
+      {/* Navbar */}
       <div className="fixed top-0 left-0 w-full z-[3000] bg-transparent backdrop-blur-sm flex items-center justify-between px-6 py-4">
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] w-fit mx-auto">
-          D&amp;A code design
-        </h1>
-
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] w-fit mx-auto">D&amp;A code design</h1>
         <div className="fixed top-16 sm:top-24 left-1/2 transform -translate-x-1/2 z-[1001] text-center">
-          <h1 className="text-base sm:text-lg md:text-xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] typewriter w-fit mx-auto">
-            Coding a new world of possibilities
-          </h1>
+          <h1 className="text-base sm:text-lg md:text-xl font-bold text-white drop-shadow-[0_0_15px_#00f0ff] typewriter w-fit mx-auto">Coding a new world of possibilities</h1>
         </div>
-        <button
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            setActiveIndex(null);
-            setHeroOpacity(1);
-          }}
-          className="text-slate-500 text-xl sm:text-3xl md:text-4xl focus:outline-none"
-          style={{ fontWeight: 'bold' }}
-        >
-          ☰
-        </button>
-
+        <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); setActiveIndex(null); setHeroOpacity(1); }} className="text-slate-500 text-xl sm:text-3xl md:text-4xl focus:outline-none font-bold">☰</button>
       </div>
 
-      <div
-        className="fixed z-[1001] flex flex-col items-center gap-4 sm:gap-[1.75rem] transition-transform duration-500"
-        style={{ top: '18vh', right: '5vw', transform: `translateY(${offset}em)` }}
-      >
+      {/* Right-side buttons */}
+      <div className="fixed z-[1001] flex flex-col items-center gap-4 sm:gap-[1.75rem] transition-transform duration-500" style={{ top: '18vh', right: '5vw', transform: `translateY(${offset}em)` }}>
         {sections.map((section, idx) => {
           const style = buttonStyles[idx];
           const isActive = scrollY > 50 && activeIndex === idx;
           const isHovered = hoveredIdx === idx;
-
-          const outerGradient = isActive || isHovered
-            ? `linear-gradient(to bottom right, ${style.from}, ${style.to})`
-            : `linear-gradient(to bottom right, rgb(0, 0, 0), rgb(61, 61, 61))`;
-
-          const innerGradient = isActive || isHovered
-            ? `linear-gradient(to bottom right, ${style.innerFrom}, ${style.innerTo})`
-            : `linear-gradient(to bottom right, #2a2a2a, rgb(0, 0, 0))`;
-
+          const outerGradient = isActive || isHovered ? `linear-gradient(to bottom right, ${style.from}, ${style.to})` : `linear-gradient(to bottom right, rgb(0, 0, 0), rgb(61, 61, 61))`;
+          const innerGradient = isActive || isHovered ? `linear-gradient(to bottom right, ${style.innerFrom}, ${style.innerTo})` : `linear-gradient(to bottom right, #2a2a2a, rgb(0, 0, 0))`;
           return (
-            <div
-              key={idx}
-              onClick={() => scrollToSection(idx)}
-              onMouseEnter={() => setHoveredIdx(idx)}
-              onMouseLeave={() => setHoveredIdx(null)}
-              className="w-16 h-16 sm:w-24 sm:h-24 rounded-[20%] flex items-center justify-center transition-all duration-300 cursor-pointer border-2"
-              style={{
-                backgroundImage: outerGradient,
-                borderColor: isActive || isHovered ? "rgba(80, 52, 23, 0.73)" : "#313130",
-                boxShadow: isActive || isHovered ? "0 0 45px rgba(255,180,100,0.6)" : "none",
-                transform: isActive || isHovered ? "scale(1.05)" : "scale(1)"
-              }}
-            >
-              <div
-                className="w-[80%] h-[80%] rounded-[20%] flex items-center justify-center text-center p-2 transition-all duration-300 border-2"
-                style={{
-                  backgroundImage: innerGradient,
-                  borderColor: isActive || isHovered ? "rgba(163, 107, 16, 0.6)" : style.to,
-                  boxShadow: isActive || isHovered
-                    ? "inset 0 4px 6px rgba(0,0,0,0.6), inset 0 -3px 5px rgba(255,255,255,0.08)"
-                    : "inset 0 0 2px rgba(255,255,255,0.05)"
-                }}
-              >
-                <p className="text-[#fffde6] text-[0.55rem] sm:text-[0.75rem] font-bold leading-tight drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] text-center whitespace-normal">
-                  {section.title === "מנועי AI"
-                    ? "AI"
-                    : section.title.replace(" ", "\n")}
-                </p>
+            <div key={idx} onClick={() => scrollToSection(idx)} onMouseEnter={() => setHoveredIdx(idx)} onMouseLeave={() => setHoveredIdx(null)} className="w-16 h-16 sm:w-24 sm:h-24 rounded-[20%] flex items-center justify-center transition-all duration-300 cursor-pointer border-2" style={{ backgroundImage: outerGradient, borderColor: isActive || isHovered ? "rgba(80, 52, 23, 0.73)" : "#313130", boxShadow: isActive || isHovered ? "0 0 45px rgba(255,180,100,0.6)" : "none", transform: isActive || isHovered ? "scale(1.05)" : "scale(1)" }}>
+              <div className="w-[80%] h-[80%] rounded-[20%] flex items-center justify-center text-center p-2 transition-all duration-300 border-2" style={{ backgroundImage: innerGradient, borderColor: isActive || isHovered ? "rgba(163, 107, 16, 0.6)" : style.to, boxShadow: isActive || isHovered ? "inset 0 4px 6px rgba(0,0,0,0.6), inset 0 -3px 5px rgba(255,255,255,0.08)" : "inset 0 0 2px rgba(255,255,255,0.05)" }}>
+                <p className="text-[#fffde6] text-[0.55rem] sm:text-[0.75rem] font-bold leading-tight drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] text-center whitespace-normal">{section.title === "מנועי AI" ? "AI" : section.title.replace(" ", "\n")}</p>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* סקשנים */}
+      {/* Sections */}
       {allSections.map((item, index) => {
         const sectionOffset = index * sectionHeight;
         const relativeY = scrollY - sectionOffset + sectionHeight / 2;
         const progress = relativeY / sectionHeight;
         const currentIndex = index % sections.length;
 
-        let scale = 0.05;
-        let opacity = 0;
-        let borderColor = "rgba(0, 169, 253, 0)";
-        let backgroundColor = "rgba(15, 23, 42, 0)";
-        let textOpacity = 0;
-        let glow = "";
-        
+        let scale = 0.05, opacity = 0, borderColor = "rgba(0, 169, 253, 0)", backgroundColor = "rgba(15, 23, 42, 0)", textOpacity = 0, glow = "";
+
         if (scrollY > 50) {
           if (progress < 0.75) {
-            scale = 0.05 + progress * 1.1176;
-            opacity = Math.max(progress * 1.2, 0.05);
+            scale = 0.05 + progress * 1.1176; opacity = Math.max(progress * 1.2, 0.05);
           } else if (progress < 1.35) {
-            scale = progress >= 1.25 && progress < 1.4 ? 1.1 : 1;
-            opacity = 1;
-
-            if (progress > 0.84 && progress < 0.90) {
-              glow = `0 0 120px rgba(255, 200, 50, 1), 0 0 60px rgba(255, 200, 50, 0.85)`;
-            } else if (progress >= 0.75 && progress < 1.35) {
-              glow = `0 0 60px rgba(255, 240, 150, 0.5)`;
-            }
-
-            if (progress < 0.95) {
-              const bProgress = (progress - 0.75) / 0.25;
-              borderColor = `rgba(249, 115, 22, ${bProgress.toFixed(2)})`;
-            } else {
-              borderColor = "#f97316";
-            }
-
-            if (progress < 1.0) {
-              backgroundColor = "rgba(15, 23, 42, 0)";
-            } else if (progress < 1.15) {
-              const bgProgress = (progress - 1.0) / 0.15;
-              backgroundColor = `rgba(15, 23, 42, ${bgProgress.toFixed(2)})`;
-            } else {
-              backgroundColor = "rgba(15, 23, 42, 1)";
-            }
-
-            if (progress < 1.15) {
-              textOpacity = 0;
-            } else if (progress < 1.3) {
-              const tProgress = (progress - 1.15) / 0.15;
-              textOpacity = tProgress;
-            } else {
-              textOpacity = 1;
-            }
+            scale = progress >= 1.25 && progress < 1.4 ? 1.1 : 1; opacity = 1;
+            if (progress > 0.84 && progress < 0.90) glow = `0 0 120px rgba(255, 200, 50, 1), 0 0 60px rgba(255, 200, 50, 0.85)`; else if (progress >= 0.75 && progress < 1.35) glow = `0 0 60px rgba(255, 240, 150, 0.5)`;
+            if (progress < 0.95) borderColor = `rgba(249, 115, 22, ${((progress - 0.75) / 0.25).toFixed(2)})`; else borderColor = "#f97316";
+            if (progress < 1.0) backgroundColor = "rgba(15, 23, 42, 0)"; else if (progress < 1.15) backgroundColor = `rgba(15, 23, 42, ${((progress - 1.0) / 0.15).toFixed(2)})`; else backgroundColor = "rgba(15, 23, 42, 1)";
+            if (progress < 1.15) textOpacity = 0; else if (progress < 1.3) textOpacity = (progress - 1.15) / 0.15; else textOpacity = 1;
           } else {
-            const exitProgress = (progress - 1.4) / 0.3;
-            scale = 1 + exitProgress * 2;
-            opacity = 1 - exitProgress;
-
-            const borderFade = Math.max(0, 1 - exitProgress * 2);
-            borderColor = `rgba(249, 115, 22, ${borderFade.toFixed(2)})`;
-
-            const bgFade = Math.max(0, 1 - exitProgress * 1.5);
-            backgroundColor = `rgba(15, 23, 42, ${bgFade.toFixed(2)})`;
-
-            textOpacity = Math.max(0, 1 - exitProgress * 2);
+            const exitProgress = (progress - 1.4) / 0.3; scale = 1 + exitProgress * 2; opacity = 1 - exitProgress; borderColor = `rgba(249, 115, 22, ${Math.max(0, 1 - exitProgress * 2).toFixed(2)})`; backgroundColor = `rgba(15, 23, 42, ${Math.max(0, 1 - exitProgress * 1.5).toFixed(2)})`; textOpacity = Math.max(0, 1 - exitProgress * 2);
           }
         }
 
         const isPhoneAppsSection = item.title === "אפליקציות לטלפון";
 
-        const content = (
-          <div
-            style={{
-              borderColor,
-              backgroundColor,
-              boxShadow: glow,
-              position: "relative",
-              zIndex: 2,
-            }}
-            className="w-full h-full border-4 rounded-2xl flex items-center justify-center text-white"
-          >
-            <div className="p-6">
-              <h2 className="text-xl sm:text-3xl font-bold mb-4 break-words whitespace-normal text-center">
-                {item.title}
-              </h2>
-              <p
-                className="text-xs sm:text-base whitespace-pre-line leading-relaxed text-center px-2 sm:px-4"
-                style={{ opacity: textOpacity, direction: 'rtl' }}
-              >
-                {item.text.map((line, lineIdx) => (
-                  <span key={lineIdx} className="flex items-start justify-center">
-                    <span
-                      className="w-2 h-2 rounded-full inline-block mt-[0.65rem] flex-shrink-0"
-                      style={{
-                        backgroundColor: '#00bcd4',
-                        marginLeft: '0.5rem'
-                      }}
-                    />
-                    {line}
-                  </span>
-                ))}
-              </p>
+        const contentInner = (
+          <div className="p-6">
+            <h2 className="text-xl sm:text-3xl font-bold mb-4 break-words whitespace-normal text-center">{item.title}</h2>
+            <div className="text-xs sm:text-base leading-relaxed text-center px-2 sm:px-4" style={{ opacity: textOpacity, direction: 'rtl' }}>
+              {item.text.map((line, lineIdx) => (
+                <span key={lineIdx} className="flex items-start justify-center">
+                  <span className="w-2 h-2 rounded-full inline-block mt-[0.65rem] flex-shrink-0" style={{ backgroundColor: '#00bcd4', marginLeft: '0.5rem' }} />
+                  {line}
+                </span>
+              ))}
+
+              {isPhoneAppsSection && (
+                <div className="mt-6 flex flex-col items-center gap-3">
+                  <div className="flex items-center gap-3">
+                    <Image src="/rememo-icon.png" alt="ReMEMO icon" width={56} height={56} className="rounded-xl" />
+                    <span className="text-sm text-gray-300">ReMEMO – מסרי קול וטקסט מתוזמנים</span>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-center gap-2">
+                    <Link href="/apps/rememo" className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">Read more</Link>
+                    <Link href="/privacy-policy-rememo" className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-medium text-white/90 hover:bg-white/10">Privacy Policy</Link>
+                    <Link href="/terms-rememo" className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-medium text-white/90 hover:bg-white/10">Terms of Service</Link>
+                  </div>
+                </div>
+              )}
             </div>
+          </div>
+        );
+
+        const content = (
+          <div style={{ borderColor, backgroundColor, boxShadow: glow, position: "relative", zIndex: 2 }} className="w-full h-full border-4 rounded-2xl flex items-center justify-center text-white">
+            {contentInner}
           </div>
         );
 
@@ -344,22 +233,17 @@ export default function HomePage() {
           transform: `translate(calc(-60% - 0px), -50%) scale(${scale})`,
           opacity,
           zIndex: 999 - index,
-          // התיקון: מאפשר לחיצה רק על החלון הפעיל
           pointerEvents: activeIndex === currentIndex ? 'auto' : 'none',
-        };
+        } as const;
 
-        return isPhoneAppsSection ? (
-          <Link key={index} href="/phone-apps" style={wrapperStyle} className="w-[62vw] max-w-[90vw] sm:w-[44.8vw] h-auto max-h-[80vh] sm:h-[36vh] rounded-2xl flex items-center justify-center text-center p-4 overflow-visible relative">
-            {content}
-          </Link>
-        ) : (
+        return (
           <div key={index} style={wrapperStyle} className="w-[62vw] max-w-[90vw] sm:w-[44.8vw] h-auto max-h-[80vh] sm:h-[36vh] rounded-2xl flex items-center justify-center text-center p-4 overflow-visible relative">
             {content}
           </div>
         );
       })}
 
-      {/* פוטר קבוע */}
+      {/* Footer */}
       <footer className="fixed bottom-0 left-0 w-full h-36 z-[2000]">
         <div className="h-1/2 w-full bg-transparent" />
         <div className="relative h-1/2 w-full bg-gradient-to-b from-gray-800 to-black text-white text-center text-sm flex justify-center items-center">
@@ -368,64 +252,33 @@ export default function HomePage() {
             <span className="w-2 h-2 rounded-full bg-gradient-to-b from-yellow-300 to-orange-500 inline-block" />
             054-3385089
           </p>
-
-          <a
-            href="https://wa.me/972543385089?text=שלום עמוס, ראיתי את האתר ורציתי ליצור קשר"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute flex items-center gap-2"
-            style={{
-              right: '25%',
-              top: 10,
-              transform: 'translateY(-100%)',
-              background: 'linear-gradient(to bottom,rgb(145, 76, 206),rgb(37, 8, 37))',
-              color: '#f97316',
-              fontWeight: 'bold',
-              padding: '0.5rem 1.25rem',
-              fontSize: '1rem',
-              borderRadius: '0.75rem',
-              boxShadow: '0 4px 14px rgba(5, 0, 9, 0.4), 0 6px 20px rgba(0,0,0,0.3)',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = '0 6px 20px rgba(128,0,255,0.6)';
-              e.currentTarget.style.transform = 'translateY(-110%)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = '0 4px 14px rgba(128,0,255,0.4), 0 6px 20px rgba(0,0,0,0.3)';
-              e.currentTarget.style.transform = 'translateY(-100%)';
-            }}
-          >
+          <a href="https://wa.me/972543385089?text=שלום עמוס, ראיתי את האתר ורציתי ליצור קשר" target="_blank" rel="noopener noreferrer" className="absolute flex items-center gap-2" style={{ right: '25%', top: 10, transform: 'translateY(-100%)', background: 'linear-gradient(to bottom,rgb(145, 76, 206),rgb(37, 8, 37))', color: '#f97316', fontWeight: 'bold', padding: '0.5rem 1.25rem', fontSize: '1rem', borderRadius: '0.75rem', boxShadow: '0 4px 14px rgba(5, 0, 9, 0.4), 0 6px 20px rgba(0,0,0,0.3)', transition: 'all 0.3s ease' }}>
             <Image src="/whatsapp.png" alt="WhatsApp Icon" width={30} height={30} style={{ opacity: 0.85, transform: 'translateY(-4px)' }} />
           </a>
-
-          <a
-            href="mailto:amosbahar@gmail.com"
-            className="absolute flex items-center gap-2"
-            style={{
-              left: '25%',
-              top: 10,
-              transform: 'translateY(-100%)',
-              background: 'linear-gradient(to bottom, rgb(17, 81, 177), rgb(15, 22, 54))',
-              color: '#f97316',
-              fontWeight: 'bold',
-              padding: '0.5rem 1.25rem',
-              fontSize: '1rem',
-              borderRadius: '0.75rem',
-              boxShadow: '0 4px 14px rgba(4, 7, 11, 0.4), 0 6px 20px rgba(22, 9, 9, 0.3)',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = '0 6px 20px rgba(128,0,255,0.6)';
-              e.currentTarget.style.transform = 'translateY(-110%)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = '0 4px 14px rgba(128,0,255,0.4), 0 6px 20px rgba(0,0,0,0.3)';
-              e.currentTarget.style.transform = 'translateY(-100%)';
-            }}
-          >
+          <a href="mailto:amosbahar@gmail.com" className="absolute flex items-center gap-2" style={{ left: '25%', top: 10, transform: 'translateY(-100%)', background: 'linear-gradient(to bottom, rgb(17, 81, 177), rgb(15, 22, 54))', color: '#f97316', fontWeight: 'bold', padding: '0.5rem 1.25rem', fontSize: '1rem', borderRadius: '0.75rem', boxShadow: '0 4px 14px rgba(4, 7, 11, 0.4), 0 6px 20px rgba(22, 9, 9, 0.3)', transition: 'all 0.3s ease' }}>
             <Image src="/Gmail_Icon.png" alt="Mail Icon" width={30} height={30} style={{ opacity: 0.9, transform: 'translateY(-4px)', zIndex: 50, pointerEvents: 'none' }} />
           </a>
+          <a
+  href="/rememo-delete"
+  className="absolute flex items-center gap-2"
+  style={{
+    bottom: "10px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    background: "linear-gradient(to bottom, #333, #111)",
+    color: "#f97316",
+    fontWeight: "bold",
+    padding: "0.5rem 1.25rem",
+    fontSize: "0.9rem",
+    borderRadius: "0.75rem",
+    boxShadow: "0 4px 14px rgba(0,0,0,0.4)",
+    transition: "all 0.3s ease",
+  }}
+>
+  ReMEMO account &amp; data delete
+</a>
+<p>© 2025 D&A Code Design. All rights reserved.</p>
+
         </div>
       </footer>
     </main>
