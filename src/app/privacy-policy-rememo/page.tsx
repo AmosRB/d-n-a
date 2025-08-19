@@ -22,7 +22,7 @@ export default function PrivacyPolicyPage() {
       <p className="mt-2 text-sm text-gray-500">Last updated: <span className="font-medium">[Insert Date]</span></p>
 
       <p className="mt-6 leading-7">
-        ReMEMO ("we", "our", "us") values your privacy. This Privacy Policy explains what information we
+        ReMEMO (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) values your privacy. This Privacy Policy explains what information we
         collect, how we use it, with whom we share it, and how you can exercise your rights. By using ReMEMO,
         you agree to this Privacy Policy.
       </p>
