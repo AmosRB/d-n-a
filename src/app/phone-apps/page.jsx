@@ -15,13 +15,14 @@ const appsData = [
     link: '/tarot-ai',
     isLink: true,
   },
-  {
-    title: 'REMEMO',
-    subtitle: 'An app for sending scheduled pop-up messages',
-    icon: '/rememo/rememo_icon.png', 
-    link: '#', 
-    isLink: false,
-  },
+ {
+  title: 'REMEMO',
+  subtitle: 'An app for sending scheduled pop-up messages',
+  icon: '/rememo/rememo_icon.png',
+  link: '/rememo',   // הנתיב לדף הבית של ReMEMO
+  isLink: true,      // חשוב: כדי שהכרטיס יהפוך ללחיץ
+},
+
   { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
   { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
   { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
