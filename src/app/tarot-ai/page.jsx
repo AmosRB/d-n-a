@@ -123,10 +123,10 @@ export default function TarotAiHomePage() {
             © {new Date().getFullYear()} D&A Code Design. All rights reserved.
           </p>
           <div className="flex justify-center items-center space-x-6">
-            <Link href="/privacy-policy" className="text-purple-400 hover:text-purple-300 transition-colors">
+            <Link href="/privacy-policy-tarot.ai" className="text-purple-400 hover:text-purple-300 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms-of-service" className="text-purple-400 hover:text-purple-300 transition-colors">
+            <Link href="/terms-of-service-tarot.ai" className="text-purple-400 hover:text-purple-300 transition-colors">
               Terms of Service
             </Link>
           </div>
