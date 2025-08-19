@@ -226,15 +226,16 @@ export default function HomePage() {
           </div>
         );
 
-        const wrapperStyle = {
-          position: "fixed",
-          top: "50%",
-          left: "50%",
-          transform: `translate(calc(-60% - 0px), -50%) scale(${scale})`,
-          opacity,
-          zIndex: 999 - index,
-          pointerEvents: activeIndex === currentIndex ? 'auto' : 'none',
-        } as const;
+    const wrapperStyle = {
+  position: "fixed",
+  top: "50%",
+  left: "50%",
+  transform: `translate(calc(-60% - 0px), -50%) scale(${scale})`,
+  opacity,
+  zIndex: 999 - index,
+  pointerEvents: activeIndex === currentIndex ? 'auto' : 'none',
+};
+
 
         return (
           <div key={index} style={wrapperStyle} className="w-[62vw] max-w-[90vw] sm:w-[44.8vw] h-auto max-h-[80vh] sm:h-[36vh] rounded-2xl flex items-center justify-center text-center p-4 overflow-visible relative">
