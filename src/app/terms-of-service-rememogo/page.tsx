@@ -1,6 +1,6 @@
 // app/terms-of-service-rememogo/page.tsx
 import type { Metadata } from "next";
-import Link from "next/link"; // הוספנו ייבוא של Link
+import Link from "next/link"; 
 
 export const metadata: Metadata = {
   // עדכון הכותרות עבור ReMEMO GO
@@ -56,8 +56,9 @@ export default function TermsOfServicePage() {
             <h2>2. The Service</h2>
             <p>
               {/* עדכון תיאור השירות */}
-              ReMEMO GO provides a voice-first digital journal ("Journal") that allows you to capture, transcribe, and
-              organize content such as notes, reminders, meetings, and appointments ("User Content"). The Service uses
+              {/* --- תיקון שגיאת Vercel --- */}
+              ReMEMO GO provides a voice-first digital journal (&quot;Journal&quot;) that allows you to capture, transcribe, and
+              organize content such as notes, reminders, meetings, and appointments (&quot;User Content&quot;). The Service uses
               speech-to-text to transcribe your voice and may send notifications for scheduled reminders.
             </p>
 
@@ -72,8 +73,9 @@ export default function TermsOfServicePage() {
             <h2>4. Permissions and Devices</h2>
             <p>
               {/* עדכון הרשאות */}
-              To function correctly, the Service requires access to your device's <strong>Microphone</strong> (to record voice entries)
-              and may request access to <strong>Contacts</strong> (for the "Rememo" feature, to associate entries with contact names).
+              {/* --- תיקון שגיאת Vercel --- */}
+              To function correctly, the Service requires access to your device&apos;s <strong>Microphone</strong> (to record voice entries)
+              and may request access to <strong>Contacts</strong> (for the &quot;Rememo&quot; feature, to associate entries with contact names).
               You are responsible for granting and managing these permissions, keeping your device connected, and configured
               to allow notifications.
             </p>
@@ -99,8 +101,9 @@ export default function TermsOfServicePage() {
               third-party providers.
             </p>
             <p>
+              {/* --- תיקון שגיאת Vercel --- */}
               <strong>
-                Do not rely on ReMEMO GO for life-critical, safety-critical, medical, or emergency purposes.
+                Do not rely on ReMEMO GO for &quot;life-critical&quot;, &quot;safety-critical&quot;, medical, or emergency purposes.
               </strong>{" "}
               The Service is for informational and organizational purposes only and is not a substitute for professional advice.
             </p>
@@ -137,7 +140,7 @@ export default function TermsOfServicePage() {
               We may offer free and/or paid features. We may change pricing or introduce fees with notice on the site/app.
               Taxes and carrier data charges are your responsibility.
             </p>
-
+            
             <h2>11. Service Changes and Availability</h2>
             <p>
               We may modify, suspend, or discontinue the Service or any feature at any time, temporarily or permanently,
@@ -150,7 +153,7 @@ export default function TermsOfServicePage() {
               laws. You receive a personal, non-exclusive, non-transferable, revocable license to use the app in
               accordance with these Terms.
             </p>
-
+            
             <h2>13. Termination</h2>
             <p>
               You may stop using the Service at any time. We may suspend or terminate access immediately for any breach or
@@ -159,8 +162,9 @@ export default function TermsOfServicePage() {
             </p>
 
             <h2>14. Disclaimers</h2>
+            {/* --- תיקון שגיאת Vercel --- */}
             <p>
-              THE SERVICE IS PROVIDED “AS IS” AND “AS AVAILABLE.” WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+              THE SERVICE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE.&quot; WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
               INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. We do not warrant
               uninterrupted, timely, secure, or error-free operation, or that reminders will be delivered precisely on time.
             </p>
@@ -176,7 +180,7 @@ export default function TermsOfServicePage() {
               Our total aggregate liability for any claim shall not exceed the greater of US$50 or the amount you paid to
               use the Service in the 12 months preceding the claim.
             </p>
-
+            
             <h2>16. Indemnification</h2>
             <p>
               You agree to defend, indemnify, and hold the Company harmless from claims, damages, losses, and expenses
@@ -187,6 +191,7 @@ export default function TermsOfServicePage() {
             {/* --- שינוי קריטי כאן --- */}
             <h2>17. Account and Data Deletion</h2>
             <p>
+              {/* --- תיקון שגיאת Vercel --- */}
               <strong>
                 You may delete your account and all associated journal data at any time directly from the
                 &quot;Settings&quot; screen within the ReMEMO GO app.
@@ -219,3 +224,4 @@ export default function TermsOfServicePage() {
     </div>
   );
 }
+

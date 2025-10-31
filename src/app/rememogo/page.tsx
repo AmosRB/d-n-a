@@ -39,8 +39,10 @@ function DeleteModal({ isOpen, onClose }) {
         <ol className="list-decimal list-inside space-y-3 text-left text-base">
           <li>Open the <strong>ReMEMO GO</strong> app on your device.</li>
           <li>Navigate to the <strong>Settings</strong> page (tap the gear icon).</li>
-          <li>Scroll down to the "Danger Zone" section.</li>
-          <li>Tap on <strong>"Delete Journal"</strong>.</li>
+          {/* --- תיקון שגיאת Vercel --- */}
+          <li>Scroll down to the <strong>&quot;Danger Zone&quot;</strong> section.</li>
+          <li>Tap on <strong>&quot;Delete Journal&quot;</strong>.</li>
+          {/* --- סוף תיקון --- */}
           <li>Follow the prompts to confirm the deletion.</li>
         </ol>
         <p className="text-sm text-gray-600 mt-6 text-center">
@@ -176,7 +178,7 @@ export default function RememoGoPage() {
               </a>
               <span className="text-gray-500">|</span>
               <a 
-                href="/terms-of-service-rememogo" // --- הקישור עודכן כאן ---
+                href="/terms-of-service-rememogo" // נתיב מעודכן
                 className="transition-colors"
                 style={{ color: AppColors.journalBackground }}
                 onMouseOver={(e) => e.currentTarget.style.color = '#FFFFFF'}
