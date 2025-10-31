@@ -1,6 +1,9 @@
 // app/terms-of-service-rememogo/page.tsx
+
+// בדיקת עדכון אחרונה 123
 import type { Metadata } from "next";
 import Link from "next/link"; 
+// ...
 
 export const metadata: Metadata = {
   // עדכון הכותרות עבור ReMEMO GO
