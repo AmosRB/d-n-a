@@ -17,8 +17,12 @@ const screenshots = [
   { src: 'rememo_go screen 4.jpeg' },
 ];
 
-// קומפוננטת מודאל למחיקת נתונים
-function DeleteModal({ isOpen, onClose }) {
+
+interface DeleteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+function DeleteModal({ isOpen, onClose }: DeleteModalProps) {
   if (!isOpen) return null;
 
   return (
