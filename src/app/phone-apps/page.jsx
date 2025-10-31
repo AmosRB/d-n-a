@@ -15,15 +15,22 @@ const appsData = [
     link: '/tarot-ai',
     isLink: true,
   },
- {
-  title: 'REMEMO',
-  subtitle: 'An app for sending scheduled pop-up messages',
-  icon: '/rememo/rememo_icon.png',
-  link: '/rememo',   // הנתיב לדף הבית של ReMEMO
-  isLink: true,      // חשוב: כדי שהכרטיס יהפוך ללחיץ
-},
-
-  { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
+  {
+    title: 'REMEMO',
+    subtitle: 'An app for sending scheduled pop-up messages',
+    icon: '/rememo/rememo_icon.png',
+    link: '/rememo',   // הנתיב לדף הבית של ReMEMO
+    isLink: true,      // חשוב: כדי שהכרטיס יהפוך ללחיץ
+  },
+  // --- הנה האפליקציה החדשה שהוספתי ---
+  {
+    title: 'REMEMO GO',
+    subtitle: 'A voice-powered journal and reminder app',
+    icon: '/rememogo/rememo_go_icon.png', // נתיב הלוגו כפי שביקשת
+    link: '/rememogo',   // קישור לדף האפליקציה שבנינו
+    isLink: true,
+  },
+  // ------------------------------------
   { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
   { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
   { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
@@ -35,6 +42,7 @@ const AppCard = ({ app }) => {
     <div className={`group flex flex-col items-center justify-start p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-md h-full text-center transition-all duration-300 hover:shadow-xl hover:border-blue-500 hover:scale-105 ${app.isLink ? 'cursor-pointer' : 'cursor-default'}`}>
       <div className="w-24 h-24 relative mb-4">
         {app.icon ? (
+          // שימוש ב-Image של Next.js כפי שהיה במקור
           <Image
             src={app.icon}
             alt={`${app.title} icon`}
@@ -55,6 +63,7 @@ const AppCard = ({ app }) => {
   );
 
   return app.isLink ? (
+    // שימוש ב-Link של Next.js כפי שהיה במקור
     <Link href={app.link} className="no-underline">
       {cardContent}
     </Link>
@@ -88,3 +97,4 @@ export default function PhoneAppsPage() {
     </div>
   );
 }
+
