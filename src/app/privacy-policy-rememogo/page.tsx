@@ -1,215 +1,164 @@
-"use client";
+// app/privacy-policy-rememogo/page.tsx
+import type { Metadata } from "next";
+import Link from "next/link"; // הוספנו ייבוא עבור קישורים
 
-import React, { useState } from 'react';
-
-// צבעים מתוך app_colors.dart
-const AppColors = {
-  primary: '#0006A6', // כחול עמוק
-  accent: '#FF9500',  // כתום
-  journalBackground: '#FFECA8', // צהבהב
+export const metadata: Metadata = {
+  // עדכון עבור ReMEMO GO
+  title: "Privacy Policy – ReMEMO GO",
+  description:
+    "Learn how ReMEMO GO collects, uses, shares, and protects your information, including your Google account info, voice recordings, and transcriptions.",
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: "Privacy Policy – ReMEMO GO",
+    description:
+      "Learn how ReMEMO GO collects, uses, shares, and protects your information.",
+    type: "article",
+    url: "/privacy-policy-rememogo",
+  },
 };
 
-// מערך של צילומי המסך
-const screenshots = [
-  { src: 'rememo_go screen 1.jpeg' },
-  { src: 'rememo_go screen 3.jpeg' },
-  { src: 'rememo_go screen 2.jpeg' },
-  { src: 'rememo_go screen 4.jpeg' },
-];
-
-interface DeleteModalProps {
-  isOpen: boolean;
-  onClose: () => void; 
-}
-function DeleteModal({ isOpen, onClose }: DeleteModalProps) {
-  if (!isOpen) return null;
+export default function PrivacyPolicyPage() {
+  const lastUpdatedDate = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 transition-opacity"
-      onClick={onClose}
-    >
-      <div 
-        className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6 text-gray-900"
-        onClick={(e) => e.stopPropagation()} // מונע סגירה בלחיצה על המודאל עצמו
-      >
-        <h3 className="text-2xl font-bold mb-4 text-center" style={{ color: AppColors.primary }}>
-          Delete Account & Data
-        </h3>
-        <p className="text-center text-lg mb-6">
-          To delete your account and all associated journal data, please follow these steps:
-        </p>
-        <ol className="list-decimal list-inside space-y-3 text-left text-base">
-          <li>Open the <strong>ReMEMO GO</strong> app on your device.</li>
-          <li>Navigate to the <strong>Settings</strong> page (tap the gear icon).</li>
-          {/* --- תיקון שגיאת Vercel --- */}
-          <li>Scroll down to the <strong>&quot;Danger Zone&quot;</strong> section.</li>
-          <li>Tap on <strong>&quot;Delete Journal&quot;</strong>.</li>
-          {/* --- סוף תיקון --- */}
-          <li>Follow the prompts to confirm the deletion.</li>
-        </ol>
-        <p className="text-sm text-gray-600 mt-6 text-center">
-          This action is irreversible and will permanently delete all your data from both your device and the cloud.
-        </p>
-        <button
-          onClick={onClose}
-          className="w-full mt-6 py-3 rounded-lg text-white font-semibold transition-colors"
-          style={{ backgroundColor: AppColors.primary, opacity: 0.9 }}
-          onMouseOver={(e) => e.currentTarget.style.opacity = '1'}
-          onMouseOut={(e) => e.currentTarget.style.opacity = '0.9'}
-        >
-          I Understand
-        </button>
+    <div className="bg-white text-gray-800 font-sans antialiased">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-4xl mx-auto">
+          <header className="text-center mb-10 border-b border-gray-200 pb-4">
+            {/* עדכון שם האפליקציה */}
+            <h1 className="text-4xl font-extrabold text-gray-900">
+              Privacy Policy — ReMEMO GO
+            </h1>
+            <p className="text-gray-500 mt-2">Last updated: {lastUpdatedDate}</p>
+          </header>
+
+          <main className="prose prose-lg max-w-none">
+            <p>
+              ReMEMO GO (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) values your privacy. This Privacy Policy explains what
+              information we collect, how we use it, with whom we share it, and how you can exercise your rights. By
+              using ReMEMO GO, you agree to this Privacy Policy.
+            </p>
+
+            <h2>Information We Collect</h2>
+            <ul>
+              <li>
+                {/* עדכון להתאמה ל-Google Sign-In בלבד */}
+                <strong>Personal Information:</strong> Your email address, name, and profile picture as provided by your
+                Google Account (via Google Sign-In).
+              </li>
+              <li>
+                {/* עדכון לתיאור היומן הקולי */}
+                <strong>User Content:</strong> Voice recordings, speech-to-text transcriptions, and any notes,
+                reminders, or appointments you create in your journal.
+              </li>
+              <li>
+                <strong>Technical Information:</strong> Device identifiers, app version, and basic diagnostics
+                required to provide and improve the service.
+              </li>
+            </ul>
+
+            <h2>How We Use Information</h2>
+            <ul>
+              <li>To identify and authenticate you via your Google Account.</li>
+              <li>
+                {/* עדכון לתיאור היומן הקולי */}
+                To deliver, display, and synchronize your journal entries, transcriptions, and reminders.
+              </li>
+              <li>To send push notifications (via Firebase) and display local notifications (via Awesome Notifications)
+                for scheduled reminders.</li>
+              <li>To operate, maintain, and improve the app’s reliability and performance.</li>
+              <li>To comply with legal obligations and enforce our terms.</li>
+            </ul>
+
+            <h2>Sharing with Third Parties</h2>
+            <p>
+              We do not sell your personal data. We share information only with trusted providers necessary to
+              deliver core functionality:
+            </p>
+            <ul>
+              <li>
+                {/* עדכון ספקי צד שלישי */}
+                <strong>Google (Firebase):</strong> For authentication (Google Sign-In), cloud database (Firestore),
+                file storage (for voice recordings), and push notification infrastructure (Firebase Cloud
+                Messaging).
+              </li>
+              <li>
+                <strong>Awesome Notifications:</strong> To schedule and display local, on-device notifications.
+              </li>
+            </ul>
+
+            {/* --- סעיף מחיקה מעודכן --- */}
+            <h2>Your Rights & Data Deletion</h2>
+            <p>
+              You have the right to access, modify, and delete your personal information.
+            </p>
+            <p>
+              <strong>
+                You can permanently delete your account and all associated journal data (voice entries,
+                transcriptions, etc.) at any time. This action is performed directly from the &quot;Settings&quot;
+                screen within the ReMEMO GO app itself.
+              </strong>
+            </p>
+            <p>
+              For a detailed guide on how to do this, please visit our{" "}
+              <Link href="/rememogo">app information page</Link> and see the section explaining data deletion.
+              If you have any trouble, you can also contact us for assistance at
+              {" "}
+              {/* עדכון אימייל התמיכה */}
+              <a href="mailto:support@d-n-a.com">support@d-n-a.com</a>.
+            </p>
+            <p>
+              After deletion, your data will be permanently removed from our active systems and backups according to
+              our retention schedule.
+            </p>
+            {/* --- סוף סעיף מחיקה --- */}
+
+            <h2>Sensitive Permissions</h2>
+            <ul>
+              <li>
+                {/* עדכון הרשאת אנשי קשר */}
+                <strong>Contacts:</strong> If you grant permission, this is used solely to help you associate journal
+                entries with names from your phonebook (e.g., for the &quot;Rememo&quot; feature). We do not upload your
+                contact list.
+              </li>
+              <li>
+                <strong>Microphone:</strong> Used exclusively to record voice entries for your journal.
+              </li>
+            </ul>
+
+            <h2>Security</h2>
+            <p>
+              We apply industry-standard safeguards to protect your information. However, no method of transmission or
+              storage is 100% secure, and we cannot guarantee absolute security.
+            </p>
+
+            <h2>Children’s Privacy</h2>
+            <p>
+              {/* עדכון גיל מינימום לפי ה-TOS */}
+              ReMEMO GO is not intended for children under 16, and we do not knowingly collect personal information
+              from children.
+            </p>
+
+            <h2>Changes to This Policy</h2>
+            <p>
+              We may update this Privacy Policy from time to time. Significant changes will be communicated within the
+              app or on our website.
+            </p>
+
+            <h2>Contact Us</h2>
+            <p>
+              Questions about this Privacy Policy? Contact us at
+              {" "}
+              {/* עדכון אימייל התמיכה */}
+              <a href="mailto:support@d-n-a.com">support@d-n-a.com</a>.
+            </p>
+          </main>
+        </div>
       </div>
     </div>
   );
 }
-
-// קומפוננטת הדף הראשי
-export default function RememoGoPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  return (
-    <>
-      <div 
-        className="text-white min-h-screen font-sans antialiased"
-        style={{ backgroundColor: AppColors.primary }} // רקע כחול עמוק
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {/* ----- Header Section ----- */}
-          <header className="text-center py-12 sm:py-16">
-            <div className="flex justify-center items-center mb-6">
-              <img
-                src="/rememogo/rememo_go_icon.png" // נתיב הלוגו
-                alt="ReMEMO GO Logo"
-                width={120}
-                height={120}
-                className="rounded-3xl shadow-2xl"
-              />
-            </div>
-            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
-              ReMEMO GO
-            </h1>
-            <p 
-              className="max-w-3xl mx-auto text-xl md:text-2xl font-light"
-              style={{ color: AppColors.journalBackground }} // טקסט בצהבהב
-            >
-              Your Voice-Powered Second Brain.
-            </p>
-            <p className="max-w-2xl mx-auto text-lg text-gray-300 mt-6">
-              Capture your fleeting thoughts, notes, reminders, and appointments—all without typing a word. 
-              Designed for life in motion.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-              <a 
-                href="#" 
-                className="py-3 px-8 rounded-full text-lg font-semibold transition-transform transform hover:scale-105"
-                style={{ backgroundColor: AppColors.accent, color: AppColors.primary }} // כפתור כתום
-              >
-                Get it on Google Play
-              </a>
-              <a 
-                href="#" 
-                className="py-3 px-8 rounded-full text-lg font-semibold transition-transform transform hover:scale-105"
-                style={{ backgroundColor: AppColors.accent, color: AppColors.primary }} // כפתור כתום
-              >
-                Download on the App Store
-              </a>
-            </div>
-          </header>
-
-          {/* ----- Features Section ----- */}
-          <section className="py-16">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
-              <div className="p-6 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
-                <h3 className="text-2xl font-semibold mb-3" style={{ color: AppColors.accent }}>Voice-First Interface</h3>
-                <p className="text-gray-300">
-                  Tap, speak, and save. Instantly categorize notes, meetings, reminders, and appointments using just your voice.
-                </p>
-              </div>
-              <div className="p-6 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
-                <h3 className="text-2xl font-semibold mb-3" style={{ color: AppColors.accent }}>Organized Journal</h3>
-                <p className="text-gray-300">
-                  Review your thoughts by day, week, or month. A powerful search helps you find anything in seconds.
-                </p>
-              </div>
-              <div className="p-6 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
-                <h3 className="text-2xl font-semibold mb-3" style={{ color: AppColors.accent }}>Smart Notifications</h3>
-                <p className="text-gray-300">
-                  Reliable, precise alerts for your reminders and appointments, designed to work even when the app is closed.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* ----- Screenshots Section ----- */}
-          <section className="py-12">
-            <h2 
-              className="text-4xl font-bold text-center mb-10"
-              style={{ color: AppColors.accent }} // כותרת כתומה
-            >
-              See It in Action
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {screenshots.map((screenshot, index) => (
-                <div key={index} className="rounded-2xl overflow-hidden shadow-lg border-2" style={{ borderColor: AppColors.accent }}>
-                  <img
-                    src={`/rememogo/${screenshot.src}`} // שימוש בשמות הקבצים הנכונים
-                    alt={`ReMEMO GO Screenshot ${index + 1}`}
-                    width={400}
-                    height={800}
-                    className="w-full h-auto object-contain"
-                  />
-                  {/* אין כותרת מתחת לתמונה, כפי שביקשת */}
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* ----- Footer ----- */}
-          <footer className="text-center py-10 mt-12 border-t" style={{ borderColor: 'rgba(255, 255, 255, 0.2)' }}>
-            <div className="flex justify-center items-center space-x-6 mb-6">
-              <a 
-                href="/privacy-policy-rememogo" // נתיב מעודכן
-                className="transition-colors"
-                style={{ color: AppColors.journalBackground }}
-                onMouseOver={(e) => e.currentTarget.style.color = '#FFFFFF'}
-                onMouseOut={(e) => e.currentTarget.style.color = AppColors.journalBackground}
-              >
-                Privacy Policy
-              </a>
-              <span className="text-gray-500">|</span>
-              <a 
-                href="/terms-of-service-rememogo" // נתיב מעודכן
-                className="transition-colors"
-                style={{ color: AppColors.journalBackground }}
-                onMouseOver={(e) => e.currentTarget.style.color = '#FFFFFF'}
-                onMouseOut={(e) => e.currentTarget.style.color = AppColors.journalBackground}
-              >
-                Terms of Service
-              </a>
-            </div>
-
-            {/* כפתור מחיקת נתונים */}
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="text-sm text-gray-400 hover:text-red-500 transition-colors underline"
-            >
-              Delete Account & Journal Data
-            </button>
-
-            <p className="text-gray-500 mt-6">
-              © {new Date().getFullYear()} D&A Code Design. All rights reserved.
-            </p>
-          </footer>
-
-        </div>
-      </div>
-
-      {/* קריאה למודאל */}
-      <DeleteModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </>
-  );
-}
-
