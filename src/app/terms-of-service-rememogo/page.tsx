@@ -51,7 +51,7 @@ export default function TermsOfServicePage() {
             <h2>1. Acceptance</h2>
             <p>
               {/* עדכון שם האפליקציה */}
-              By installing or using ReMEMO GO (the "Service"), you agree to these Terms and to our{" "}
+              By installing or using ReMEMO GO (the &quot;Service&quot;), you agree to these Terms and to our{" "}
               <Link href="/privacy-policy-rememogo">Privacy Policy</Link>.
               If you do not agree, do not use the Service.
             </p>
