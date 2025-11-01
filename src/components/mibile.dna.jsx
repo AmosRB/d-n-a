@@ -1,12 +1,15 @@
+// src/components/mibile.dna.jsx
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import React from "react";
-import { useRouter } from 'next/navigation'; // --- 1. הוספנו ייבוא ---
+import { useRouter } from 'next/navigation';
+import Link from 'next/link'; // --- 1. הוספנו ייבוא ל-Link ---
 
 export default function MobileApp() {
-  const router = useRouter(); // --- 2. הוספנו את ה-router ---
+  const router = useRouter(); // router נשאר, למקרה שנצטרך אותו בעתיד
   
   const sections = [
     {
@@ -81,7 +84,7 @@ export default function MobileApp() {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       const sectionHeight = window.innerHeight;
-      const numSections = sections.length; // הוספנו את numSections כאן
+      const numSections = sections.length; 
 
       const newOpacity = scrollTop === 0 ? 1 : 0.2;
       setHeroOpacity(newOpacity);
@@ -92,11 +95,10 @@ export default function MobileApp() {
       } else {
         let baseIndex = Math.floor((scrollTop + sectionHeight / 2) / sectionHeight);
 
-        // לוגיקת גלילה מעגלית (לופ)
         if (baseIndex >= numSections) {
-            newActiveIndex = 0; // חזרה לסקשן הראשון
+            newActiveIndex = 0; 
         } else if (baseIndex < 0) {
-            newActiveIndex = numSections - 1; // קפיצה לסקשן האחרון
+            newActiveIndex = numSections - 1; 
         } else {
             newActiveIndex = baseIndex;
         }
@@ -154,16 +156,16 @@ export default function MobileApp() {
           </h1>
         </div>
       <button
-  onClick={() => {
-    setActiveIndex(null); // מסתיר את הסקשנים
-    setHeroOpacity(1);    // רקע שקוף לגמרי
-    window.scrollTo({ top: 0, behavior: "smooth" }); // גלילה לראש הדף
-  }}
-  className="text-slate-500 text-xl sm:text-4xl md:text-4xl focus:outline-none"
-  style={{ fontWeight: 'bold' }}
->
-  ☰
-</button>
+        onClick={() => {
+          setActiveIndex(null); // מסתיר את הסקשנים
+          setHeroOpacity(1);    // רקע שקוף לגמרי
+          window.scrollTo({ top: 0, behavior: "smooth" }); // גלילה לראש הדף
+        }}
+        className="text-slate-500 text-xl sm:text-4xl md:text-4xl focus:outline-none"
+        style={{ fontWeight: 'bold' }}
+      >
+        ☰
+      </button>
 
       </div>
 
@@ -185,19 +187,15 @@ export default function MobileApp() {
           return (
             <div
               key={idx}
-              // --- 3. כאן התיקון בלוגיקת הלחיצה ---
+              // --- 2. כאן התיקון בלוגיקת הלחיצה של הכפתור הצידי ---
               onClick={() => {
-                // בדיקה אם זה הכפתור של "אפליקציות לטלפון" (אינדקס 1)
-                if (idx === 1) {
-                  router.push('/phone-apps');
-                } else {
-                  // אם זה כל כפתור אחר, בצע את פעולת הגלילה הרגילה
-                  setActiveIndex(idx);
-                  window.scrollTo({
-                    top: idx * window.innerHeight,
-                    behavior: "smooth"
-                  });
-                }
+                // הסרנו את התנאי המיוחד. כל הכפתורים פועלים אותו דבר:
+                // פותחים את החלון המרחף וגוללים אליו.
+                setActiveIndex(idx);
+                window.scrollTo({
+                  top: idx * window.innerHeight,
+                  behavior: "smooth"
+                });
               }}
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
@@ -228,63 +226,82 @@ export default function MobileApp() {
         })}
       </div>
 
-      {/* סקשנים סטטיים (מופיעים/נעלמים באותו מיקום) */}
+      {/* --- 3. כאן התיקון העיקרי בסקשנים הסטטיים --- */}
       <div
         className="fixed top-0 left-0 w-full h-screen z-10 flex items-center justify-center"
-        style={{ transform: 'translateX(-34px)' }} // עדיין הזזה שמאלה
+        style={{ transform: 'translateX(-34px)' }} 
       >
-        {sections.map((item, index) => (
-          <div
-            key={index}
-            style={{
-              width: "70vw",
-              maxWidth: "90vw",
-              maxHeight: "80vh",
-              transition: "opacity 1s ease, box-shadow 0.6s ease",
-              opacity: activeIndex === index ? 1 : 0,
-              pointerEvents: activeIndex === index ? "auto" : "none",
-              position: "absolute",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "rgba(15, 23, 42, 1)",
-              border: "4px solid #f97316",
-              borderRadius: "1rem",
-              padding: "1.5rem",
-              boxShadow: activeIndex === index
-                ? "0 0 120px rgba(255, 223, 150, 0.9), 0 0 40px rgba(255, 163, 50, 0.8)"
-                : "none",
-            }}
-          >
-            <h2 className="text-center text-3xl font-bold mb-4">{item.title}</h2>
-            <div
-              dir="rtl"
-              className="text-right text-base leading-relaxed overflow-y-auto"
-              style={{
-                lineHeight: "1.75",
-                maxHeight: "calc(80vh - 6rem)",
-                width: "100%",
-              }}
+        {sections.map((item, index) => {
+          // זיהוי הסקשן הספציפי
+          const isPhoneAppsSection = item.title === "אפליקציות לטלפון";
+
+          // זה הסגנון של החלון המרחף עצמו
+          const modalStyle = {
+            width: "70vw",
+            maxWidth: "90vw",
+            maxHeight: "80vh",
+            transition: "opacity 1s ease, box-shadow 0.6s ease",
+            opacity: activeIndex === index ? 1 : 0,
+            pointerEvents: activeIndex === index ? "auto" : "none",
+            position: "absolute",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "rgba(15, 23, 42, 1)",
+            border: "4px solid #f97316",
+            borderRadius: "1rem",
+            padding: "1.5rem",
+            boxShadow: activeIndex === index
+              ? "0 0 120px rgba(255, 223, 150, 0.9), 0 0 40px rgba(255, 163, 50, 0.8)"
+              : "none",
+          };
+
+          // זה התוכן הפנימי של החלון המרחף
+          const modalContent = (
+            <>
+              <h2 className="text-center text-3xl font-bold mb-4">{item.title}</h2>
+              <div
+                dir="rtl"
+                className="text-right text-base leading-relaxed overflow-y-auto"
+                style={{
+                  lineHeight: "1.75",
+                  maxHeight: "calc(80vh - 6rem)",
+                  width: "100%",
+                }}
+              >
+                {item.text.map((sentence, sIdx) => (
+                  <div key={sIdx} className="flex items-start mb-2 last:mb-0">
+                    <span
+                      className="w-2 h-2 rounded-full inline-block mt-[0.65rem] flex-shrink-0"
+                      style={{
+                        backgroundColor: '#00bcd4',
+                        marginLeft: '0.5rem' 
+                      }}
+                    />
+                    <span style={{ display: 'block', flexGrow: 1 }}>{sentence}</span> 
+                  </div>
+                ))}
+              </div>
+            </>
+          );
+
+          // עוטפים את החלון ב-Link אם זה הסקשן הנכון (בדיוק כמו בקובץ הדסקטופ)
+          return isPhoneAppsSection ? (
+            <Link
+              key={index}
+              href="/phone-apps"
+              style={modalStyle}
+              className="cursor-pointer" // נוסיף cursor-pointer כדי שירגיש לחיץ
             >
-              {/* מפרסרים את המערך ליצירת כדורים */}
-              {item.text.map((sentence, sIdx) => (
-                <div key={sIdx} className="flex items-start mb-2 last:mb-0">
-                  {/* שינוי כאן: הוספנו margin-left מפורש לכדור, או margin-right לטקסט */}
-                  <span
-                    className="w-2 h-2 rounded-full inline-block mt-[0.65rem] flex-shrink-0"
-                    style={{
-                      backgroundColor: '#00bcd4',
-                      marginLeft: '0.5rem' // הוספת מרווח שמאלי לכדור כדי להרחיק אותו מהטקסט שמימינו (בגלל dir="rtl")
-                    }}
-                  />
-                  {/* שינוי כאן: נסיר את ה-display: 'inline' ונשתמש ב-flexbox */}
-                  <span style={{ display: 'block', flexGrow: 1 }}>{sentence}</span> {/* נשנה ל-span עם block כדי לאפשר שבירת שורה ושימוש ב-flex-grow */}
-                </div>
-              ))}
+              {modalContent}
+            </Link>
+          ) : (
+            <div key={index} style={modalStyle}>
+              {modalContent}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* פוטר */}
