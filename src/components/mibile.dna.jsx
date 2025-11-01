@@ -3,8 +3,11 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import React from "react";
+import { useRouter } from 'next/navigation'; // --- 1. הוספנו ייבוא ---
 
 export default function MobileApp() {
+  const router = useRouter(); // --- 2. הוספנו את ה-router ---
+  
   const sections = [
     {
       title: "אתרי רשת חכמים",
@@ -15,7 +18,7 @@ export default function MobileApp() {
       ]
     },
     {
-      title: "אפליקציות לטלפון",
+      title: "אפליקציות לטלפון", // זהו אינדקס 1
       text: [
         "אפליקציה לטלפון התפורה לעסק או לחיי היומיום שלכם.",
         "הוספת אפליקציה שתתחבר עם ממשקי הניהול שלכם.",
@@ -182,12 +185,19 @@ export default function MobileApp() {
           return (
             <div
               key={idx}
+              // --- 3. כאן התיקון בלוגיקת הלחיצה ---
               onClick={() => {
-                setActiveIndex(idx);
-                window.scrollTo({
-                  top: idx * window.innerHeight,
-                  behavior: "smooth"
-                });
+                // בדיקה אם זה הכפתור של "אפליקציות לטלפון" (אינדקס 1)
+                if (idx === 1) {
+                  router.push('/phone-apps');
+                } else {
+                  // אם זה כל כפתור אחר, בצע את פעולת הגלילה הרגילה
+                  setActiveIndex(idx);
+                  window.scrollTo({
+                    top: idx * window.innerHeight,
+                    behavior: "smooth"
+                  });
+                }
               }}
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
