@@ -15,7 +15,7 @@ const screenshots = [
 
 export default function MedichyHomePage() {
   return (
-    <div className="min-h-screen font-sans antialiased text-white bg-gradient-to-b from-[#A6FF00] to-[#003B1F]">
+    <div className="min-h-screen font-sans antialiased text-white bg-gradient-to-b from-[#60BD00] to-[#003B1F]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ----- Header Section ----- */}
