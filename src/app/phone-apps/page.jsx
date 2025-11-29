@@ -1,4 +1,4 @@
-// app/phone-apps/page.jsx
+// src/app/phone-apps/page.jsx
 "use client"; 
 
 import Image from 'next/image';
@@ -9,8 +9,7 @@ import React from 'react';
 const appsData = [
   {
     title: 'TAROT AI',
-    subtitle: 'An app for reading tarot cards by an AI medium (Updated)', // שינוי טקסט לצורך אימות
-    // וידוא שהסיומת נכונה
+    subtitle: 'An app for reading tarot cards by an AI medium (Updated)',
     icon: '/tarot.images/taroticon.png', 
     link: '/tarot-ai',
     isLink: true,
@@ -19,19 +18,25 @@ const appsData = [
     title: 'REMEMO',
     subtitle: 'An app for sending scheduled pop-up messages',
     icon: '/rememo/rememo_icon.png',
-    link: '/rememo',   // הנתיב לדף הבית של ReMEMO
-    isLink: true,      // חשוב: כדי שהכרטיס יהפוך ללחיץ
+    link: '/rememo',
+    isLink: true,
   },
-  // --- הנה האפליקציה החדשה שהוספתי ---
   {
     title: 'REMEMO GO',
     subtitle: 'A voice-powered journal and reminder app',
-    icon: '/rememogo/rememo_go_icon.png', // נתיב הלוגו כפי שביקשת
-    link: '/rememogo',   // קישור לדף האפליקציה שבנינו
+    icon: '/rememogo/rememo_go_icon.png',
+    link: '/rememogo',
     isLink: true,
   },
-  // ------------------------------------
-  { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
+  // --- כאן הוספנו את MEDICHY במקום ה-Coming Soon הראשון ---
+  {
+    title: 'MEDICHY',
+    subtitle: 'AI health monitoring and analysis', 
+    icon: '/medicy/medichy_logo.png', // הנתיב לתמונה בתוך תיקיית public/medicy
+    link: '/medichy',   // הקישור לעמוד האפליקציה החדש
+    isLink: true,
+  },
+  // -------------------------------------------------------
   { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
   { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
 ];
@@ -42,14 +47,17 @@ const AppCard = ({ app }) => {
     <div className={`group flex flex-col items-center justify-start p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-md h-full text-center transition-all duration-300 hover:shadow-xl hover:border-blue-500 hover:scale-105 ${app.isLink ? 'cursor-pointer' : 'cursor-default'}`}>
       <div className="w-24 h-24 relative mb-4">
         {app.icon ? (
-          // שימוש ב-Image של Next.js כפי שהיה במקור
           <Image
             src={app.icon}
             alt={`${app.title} icon`}
             fill
             sizes="100px"
             className="rounded-xl object-cover"
-            onError={(e) => { e.currentTarget.src = `https://placehold.co/100x100/e2e8f0/334155?text=${app.title.split(' ')[0]}`; }}
+            onError={(e) => { 
+                // מנגנון fallback למקרה שהתמונה לא נמצאת
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.parentElement.innerHTML = `<div class="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center text-xs text-gray-500">No Image</div>`;
+            }}
           />
         ) : (
           <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center">
@@ -63,7 +71,6 @@ const AppCard = ({ app }) => {
   );
 
   return app.isLink ? (
-    // שימוש ב-Link של Next.js כפי שהיה במקור
     <Link href={app.link} className="no-underline">
       {cardContent}
     </Link>
@@ -97,4 +104,3 @@ export default function PhoneAppsPage() {
     </div>
   );
 }
-
