@@ -59,8 +59,8 @@ export default function MedichyPrivacyPolicyPage() {
             <ul>
               <li>To generate personalized meditation scripts tailored to your specific needs and personality.</li>
               <li>To synthesize voice audio using AI technologies (e.g., ElevenLabs) based on your selected preferences.</li>
-              <li>To save and synchronize your meditation history and "Saved" sessions across devices.</li>
-              <li>To display your creations on the "Public Wall" (only if you explicitly choose to share them).</li>
+              <li>To save and synchronize your meditation history and &quot;Saved&quot; sessions across devices.</li>
+              <li>To display your creations on the &quot;Public Wall&quot; (only if you explicitly choose to share them).</li>
               <li>To improve the accuracy and quality of our AI models and app performance.</li>
             </ul>
 
