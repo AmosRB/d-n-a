@@ -28,20 +28,25 @@ const appsData = [
     link: '/rememogo',
     isLink: true,
   },
-  // --- כאן הוספנו את MEDICHY במקום ה-Coming Soon הראשון ---
   {
     title: 'MEDICHY',
     subtitle: 'AI health monitoring and analysis', 
-    icon: '/medicy/medichy_logo.png', // הנתיב לתמונה בתוך תיקיית public/medicy
-    link: '/medichy',   // הקישור לעמוד האפליקציה החדש
+    icon: '/medicy/medichy_logo.png', 
+    link: '/medichy',   
     isLink: true,
   },
-  // -------------------------------------------------------
-  { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
+  // 🔥 כאן הוספנו את HeYou:
+  { 
+    title: 'HeYou', 
+    subtitle: 'The ultimate proximity radar and local connection app', 
+    icon: '/HeYou/logo.png', // הנתיב ללוגו שהעלית
+    link: '/heyou', 
+    isLink: true 
+  },
   { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
 ];
 
-// קומפוננטה עבור כל כרטיס אפליקציה
+// ... (שאר הקובץ נשאר ללא שינוי)
 const AppCard = ({ app }) => {
   const cardContent = (
     <div className={`group flex flex-col items-center justify-start p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-md h-full text-center transition-all duration-300 hover:shadow-xl hover:border-blue-500 hover:scale-105 ${app.isLink ? 'cursor-pointer' : 'cursor-default'}`}>
@@ -54,7 +59,6 @@ const AppCard = ({ app }) => {
             sizes="100px"
             className="rounded-xl object-cover"
             onError={(e) => { 
-                // מנגנון fallback למקרה שהתמונה לא נמצאת
                 e.currentTarget.style.display = 'none';
                 e.currentTarget.parentElement.innerHTML = `<div class="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center text-xs text-gray-500">No Image</div>`;
             }}
