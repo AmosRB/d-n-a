@@ -60,6 +60,17 @@ export default function PrivacyPolicyHeYou() {
               </p>
             </section>
 
+            {/* 🔥 תוספת סעיף בטיחות ילדים - חובה לגוגל 🔥 */}
+            <section dir="ltr" className="text-left bg-purple-900/20 p-6 rounded-2xl border border-purple-500/30">
+              <h3 className="text-2xl font-semibold text-purple-300 mb-3">5. Child Safety and CSAE Policy</h3>
+              <p className="text-gray-300 mb-3">
+                HeYou has a zero-tolerance policy against Child Sexual Abuse Material (CSAM) and the sexual exploitation of children (CSAE). We are committed to maintaining a safe environment. Any user found sharing, promoting, or engaging in such activities will be immediately and permanently banned from the platform.
+              </p>
+              <p className="text-gray-300">
+                We actively monitor reports and will report any illegal activity to the relevant law enforcement authorities. If you encounter any suspicious behavior, please report it immediately using the in-app reporting tools or by contacting us directly at: <strong>amosbahar@gmail.com</strong>.
+              </p>
+            </section>
+
             {/* 🔥 חסימת מחיקת חשבון - חובה לגוגל ואפל 🔥 */}
             <section className="mt-12 p-6 bg-red-950/30 border border-red-500/30 rounded-2xl">
               <h3 className="text-2xl font-bold text-red-400 mb-3 flex items-center gap-2">
