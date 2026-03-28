@@ -66,22 +66,29 @@ export default function PrivacyPolicyHeYou() {
                 HeYou has a zero-tolerance policy against Child Sexual Abuse Material (CSAM) and the sexual exploitation of children (CSAE). We are committed to maintaining a safe environment. Any user found sharing, promoting, or engaging in such activities will be immediately and permanently banned from the platform.
               </p>
               <p className="text-gray-300">
-                We actively monitor reports and will report any illegal activity to the relevant law enforcement authorities. If you encounter any suspicious behavior, please report it immediately using the in-app reporting tools or by contacting us directly at: <strong>amosbahar@gmail.com</strong>.
+                We actively monitor reports and will report any illegal activity to the relevant law enforcement authorities. If you encounter any suspicious behavior, please report it immediately using the in-app reporting tools or by contacting us directly at: <strong>cohenmoran749@gmail.com</strong>.
               </p>
             </section>
 
-            {/* 🔥 התוספת החדשה עבור אפל - דיווח, חסימה ותוכן גולשים 🔥 */}
+            {/* כפתור דיווח חדש תחת סעיף תוכן גולשים */}
             <section className="bg-orange-900/20 p-6 rounded-2xl border border-orange-500/30 mt-6">
               <h3 className="text-2xl font-semibold text-orange-400 mb-3">6. תוכן גולשים (User Generated Content) ומדיניות אפס סובלנות</h3>
               <p className="mb-3">
                 אפליקציית HeYou נועדה להיות סביבה בטוחה ומכבדת. אנו מפעילים מדיניות של <strong>אפס סובלנות</strong> כלפי תוכן פוגעני, בריונות, הטרדה, או התנהגות בלתי הולמת מכל סוג שהוא.
               </p>
-              <p className="mb-3">
-                למשתמשים יש את היכולת לחסום משתמשים אחרים או לדווח עליהם ישירות מתוך האפליקציה (דרך תפריט הדיווח בפרופיל המשתמש או במסך הצ'אט). כל דיווח נבדק על ידי צוות הניהול שלנו בתוך 24 שעות.
+              <p className="mb-4">
+                למשתמשים יש את היכולת לחסום משתמשים אחרים או לדווח עליהם ישירות מתוך האפליקציה (דרך תפריט הדיווח בפרופיל המשתמש או במסך הצ'אט). בנוסף, ניתן לדווח לנו ישירות דרך הכפתור מטה. כל דיווח נבדק על ידי צוות הניהול שלנו בתוך 24 שעות.
               </p>
-              <p>
-                משתמש שיימצא מפר את כללי הקהילה שלנו, מייצר תוכן פוגעני או מטריד משתמשים אחרים – יוסר מהמערכת לאלתר וחשבונו ייחסם לצמיתות.
-              </p>
+              
+              <a 
+                href="mailto:cohenmoran749@gmail.com?subject=Report%20Abusive%20User%20-%20HeYou&body=שלום,%20ברצוני%20לדווח%20על%20משתמש%20או%20תוכן%20פוגעני%20באפליקציה.%0A%0Aפרטי%20המשתמש%20הפוגע%20(שם/מספר%20טלפון):%20%0Aסיבת%20הדיווח:%20"
+                className="inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-orange-900/50"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clipRule="evenodd" />
+                </svg>
+                דיווח על משתמש / תוכן פוגעני
+              </a>
             </section>
 
             <section className="mt-12 p-6 bg-red-950/30 border border-red-500/30 rounded-2xl">
@@ -96,11 +103,11 @@ export default function PrivacyPolicyHeYou() {
               </p>
               <ul className="list-decimal list-inside space-y-2 mb-6 text-gray-400">
                 <li><strong className="text-gray-200">מתוך האפליקציה:</strong> היכנסו ל"פרופיל שלי" &gt; "הגדרות" &gt; "מחיקת חשבון".</li>
-                <li><strong className="text-gray-200">דרך האינטרנט:</strong> לחצו על הכפתור מטה או שלחו אלינו אימייל לכתובת amosbahar@gmail.com עם מספר הטלפון שלכם ובקשה למחיקת הנתונים. המידע יימחק לחלוטין משרתינו תוך 7 ימי עסקים.</li>
+                <li><strong className="text-gray-200">דרך האינטרנט:</strong> לחצו על הכפתור מטה או שלחו אלינו אימייל לכתובת cohenmoran749@gmail.com עם מספר הטלפון שלכם ובקשה למחיקת הנתונים. המידע יימחק לחלוטין משרתינו תוך 7 ימי עסקים.</li>
               </ul>
               
               <a 
-                href="mailto:amosbahar@gmail.com?subject=Account%20Deletion%20Request%20-%20HeYou&body=שלום,%20אבקש%20למחוק%20את%20החשבון%20שלי%20באפליקציית%20HeYou.%0A%0Aמספר%20הטלפון%20שלי%20הוא:%20"
+                href="mailto:cohenmoran749@gmail.com?subject=Account%20Deletion%20Request%20-%20HeYou&body=שלום,%20אבקש%20למחוק%20את%20החשבון%20שלי%20באפליקציית%20HeYou.%0A%0Aמספר%20הטלפון%20שלי%20הוא:%20"
                 className="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-red-900/50"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
