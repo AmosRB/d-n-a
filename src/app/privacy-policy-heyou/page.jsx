@@ -60,7 +60,6 @@ export default function PrivacyPolicyHeYou() {
               </p>
             </section>
 
-            {/* 🔥 תוספת סעיף בטיחות ילדים - חובה לגוגל 🔥 */}
             <section dir="ltr" className="text-left bg-purple-900/20 p-6 rounded-2xl border border-purple-500/30">
               <h3 className="text-2xl font-semibold text-purple-300 mb-3">5. Child Safety and CSAE Policy</h3>
               <p className="text-gray-300 mb-3">
@@ -71,7 +70,20 @@ export default function PrivacyPolicyHeYou() {
               </p>
             </section>
 
-            {/* 🔥 חסימת מחיקת חשבון - חובה לגוגל ואפל 🔥 */}
+            {/* 🔥 התוספת החדשה עבור אפל - דיווח, חסימה ותוכן גולשים 🔥 */}
+            <section className="bg-orange-900/20 p-6 rounded-2xl border border-orange-500/30 mt-6">
+              <h3 className="text-2xl font-semibold text-orange-400 mb-3">6. תוכן גולשים (User Generated Content) ומדיניות אפס סובלנות</h3>
+              <p className="mb-3">
+                אפליקציית HeYou נועדה להיות סביבה בטוחה ומכבדת. אנו מפעילים מדיניות של <strong>אפס סובלנות</strong> כלפי תוכן פוגעני, בריונות, הטרדה, או התנהגות בלתי הולמת מכל סוג שהוא.
+              </p>
+              <p className="mb-3">
+                למשתמשים יש את היכולת לחסום משתמשים אחרים או לדווח עליהם ישירות מתוך האפליקציה (דרך תפריט הדיווח בפרופיל המשתמש או במסך הצ'אט). כל דיווח נבדק על ידי צוות הניהול שלנו בתוך 24 שעות.
+              </p>
+              <p>
+                משתמש שיימצא מפר את כללי הקהילה שלנו, מייצר תוכן פוגעני או מטריד משתמשים אחרים – יוסר מהמערכת לאלתר וחשבונו ייחסם לצמיתות.
+              </p>
+            </section>
+
             <section className="mt-12 p-6 bg-red-950/30 border border-red-500/30 rounded-2xl">
               <h3 className="text-2xl font-bold text-red-400 mb-3 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
