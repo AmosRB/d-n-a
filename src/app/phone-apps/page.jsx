@@ -35,12 +35,19 @@ const appsData = [
     link: '/medichy',   
     isLink: true,
   },
-  // 🔥 כאן הוספנו את HeYou:
   { 
     title: 'HeYou', 
     subtitle: 'The ultimate proximity radar and local connection app', 
-    icon: '/HeYou/logo.png', // הנתיב ללוגו שהעלית
+    icon: '/HeYou/logo.png',
     link: '/heyou', 
+    isLink: true 
+  },
+  // 🔥 האפליקציה החדשה שלנו:
+  { 
+    title: 'RESCALL', 
+    subtitle: 'A realistic fake call simulator', 
+    icon: '/rescall/icon.png', // וודא שהקובץ נמצא בנתיב הזה בתיקיית public
+    link: '/rescall', 
     isLink: true 
   },
   { title: 'Coming Soon', subtitle: 'A new app is on the way', icon: null, link: '#', isLink: false },
