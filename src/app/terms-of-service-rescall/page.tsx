@@ -69,7 +69,7 @@ export default function TermsOfServicePage() {
 
             <h2>5. Disclaimer of Warranties</h2>
             <p>
-              The App is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. We make no warranties, expressed or implied, regarding the App's reliability, accuracy, or suitability for your specific needs. We do not guarantee that the App will function uninterrupted, error-free, or that it will effectively serve as an excuse in social situations. Use the App entirely at your own risk.
+              The App is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. We make no warranties, expressed or implied, regarding the App&apos;s reliability, accuracy, or suitability for your specific needs. We do not guarantee that the App will function uninterrupted, error-free, or that it will effectively serve as an excuse in social situations. Use the App entirely at your own risk.
             </p>
 
             <h2>6. Limitation of Liability</h2>

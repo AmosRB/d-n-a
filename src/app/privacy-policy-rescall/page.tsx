@@ -1,6 +1,5 @@
 // app/privacy-policy-rescall/page.tsx
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Privacy Policy – ResCall",
@@ -58,7 +57,7 @@ export default function PrivacyPolicyPage() {
             <ul>
               <li>To simulate realistic fake incoming calls locally on your device.</li>
               <li>To display relevant advertisements via our third-party advertising partners.</li>
-              <li>To operate, maintain, and improve the app’s reliability and performance.</li>
+              <li>To operate, maintain, and improve the app&apos;s reliability and performance.</li>
             </ul>
 
             <h2>Sharing with Third Parties</h2>
@@ -91,13 +90,13 @@ export default function PrivacyPolicyPage() {
             </p>
             <p>
               <strong>
-                You can permanently delete all your data (including your settings and audio recordings) at any time simply by clearing the app's data in your device settings or by uninstalling the ResCall app.
+                You can permanently delete all your data (including your settings and audio recordings) at any time simply by clearing the app&apos;s data in your device settings or by uninstalling the ResCall app.
               </strong>
             </p>
 
             <h2>Security</h2>
             <p>
-              We rely on your device's native security features to protect the data stored locally by the app. While we ensure our code follows best practices, the security of your device is ultimately determined by your operating system and device settings.
+              We rely on your device&apos;s native security features to protect the data stored locally by the app. While we ensure our code follows best practices, the security of your device is ultimately determined by your operating system and device settings.
             </p>
 
             <h2>Children’s Privacy</h2>
