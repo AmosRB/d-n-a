@@ -97,6 +97,33 @@ export default function HeYouAppPage() {
             </div>
           </section>
 
+          {/* ----- Test QR Section (New) ----- */}
+          <section className="mt-16 py-12 px-6 bg-white/5 rounded-3xl border border-cyan-500/30 text-center relative overflow-hidden shadow-2xl shadow-cyan-900/20">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"></div>
+            <h2 className="text-3xl font-semibold mb-4 text-cyan-400">
+              מתחם התנסות (Test Venue)
+            </h2>
+            <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+              כבר הורדתם את האפליקציה? סרקו את הקוד הזה ישירות ממסך המחשב כדי להיכנס לזירה הווירטואלית שלנו ולהתנסות באפליקציה מיד!
+              <br/><span className="text-sm text-gray-400 mt-2 block">(מיועד גם לבדיקות של צוותי Apple ו-Google Play)</span>
+            </p>
+            <div className="flex justify-center">
+              <div className="p-4 bg-white rounded-2xl shadow-2xl shadow-cyan-500/40 inline-block relative group">
+                <div className="absolute inset-0 border-4 border-cyan-400 rounded-2xl animate-pulse opacity-50"></div>
+                <Image
+                  src="/dna-qr.jpeg"
+                  alt="HeYou Test QR Code"
+                  width={250}
+                  height={250}
+                  className="rounded-xl relative z-10"
+                />
+              </div>
+            </div>
+            <p className="text-cyan-300 mt-6 font-medium tracking-wide">
+              פתחו את HeYou במכשיר הנייד ולחצו על כפתור הסריקה המרכזי
+            </p>
+          </section>
+
         </main>
 
         {/* ----- Screenshots Section ----- */}
@@ -104,7 +131,6 @@ export default function HeYouAppPage() {
           <h2 className="text-3xl font-semibold text-center mb-10 text-orange-400">
             הצצה לאפליקציה
           </h2>
-          {/* גריד שמותאם ל-5 תמונות */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {screenshots.map((screenshot, index) => (
               <div key={index} className="rounded-2xl overflow-hidden shadow-xl shadow-black/50 border border-white/5 transition-transform hover:scale-105">
@@ -123,9 +149,14 @@ export default function HeYouAppPage() {
         {/* ----- Footer & Legal ----- */}
         <footer className="text-center py-10 mt-10 border-t border-gray-800">
           <div className="mb-6 flex justify-center items-center">
-            <button className="bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-400 hover:to-purple-500 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg shadow-purple-500/30 transition-all">
-              הורד עכשיו מ-Google Play (בקרוב)
-            </button>
+            <Link 
+              href="https://play.google.com/store/apps/details?id=com.dna.heyou" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-400 hover:to-purple-500 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg shadow-purple-500/30 transition-all inline-block"
+            >
+              הורד עכשיו מ-Google Play
+            </Link>
           </div>
           
           <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-8 mb-6">
