@@ -70,7 +70,7 @@ export default function HeYouAppPage() {
                 <div>
                   <h3 className="text-2xl font-bold text-orange-300">הפעל את הרדאר</h3>
                   <p className="text-lg text-gray-300 mt-2">
-                    הגדר כמה זמן תרצה להיות גלוי, הפעל את הרדאר ומיד תוכל לראות על גבי המסך בועות של משתמשים אחרים שנמצאים במרחק מטרים ספורים ממך.
+F                    הגדר כמה זמן תרצה להיות גלוי, הפעל את הרדאר ומיד תוכל לראות על גבי המסך בועות של משתמשים אחרים שנמצאים במרחק מטרים ספורים ממך.
                   </p>
                 </div>
               </div>
@@ -111,7 +111,7 @@ export default function HeYouAppPage() {
               <div className="p-4 bg-white rounded-2xl shadow-2xl shadow-cyan-500/40 inline-block relative group">
                 <div className="absolute inset-0 border-4 border-cyan-400 rounded-2xl animate-pulse opacity-50"></div>
                 <Image
-                  src="/dna-qr.jpeg"
+                  src="/dna_qr.jpeg"
                   alt="HeYou Test QR Code"
                   width={250}
                   height={250}
